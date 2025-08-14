@@ -41,6 +41,29 @@
             opacity: 0.9;
         }
 
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.8);
+        }
+
         .main-content {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -139,9 +162,16 @@
         .piano-keyboard {
             display: flex;
             justify-content: center;
-            margin: 30px 0;
+            margin: 30px auto;
             position: relative;
             height: 200px;
+            width: fit-content;
+            padding: 0 20px;
+        }
+
+        .keyboard-container {
+            position: relative;
+            display: flex;
         }
 
         .key {
@@ -149,31 +179,41 @@
             cursor: pointer;
             transition: all 0.1s ease;
             user-select: none;
+            border: none;
+            outline: none;
         }
 
         .white-key {
-            width: 40px;
+            width: 48px;
             height: 200px;
-            background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
-            border: 1px solid #ccc;
-            border-radius: 0 0 5px 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 100%);
+            border: 1px solid #ddd;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 15px;
+            font-weight: bold;
+            color: #555;
+            font-size: 0.9rem;
+            margin-right: -1px;
+        }
+
+        .black-key {
+            width: 32px;
+            height: 130px;
+            background: linear-gradient(to bottom, #444 0%, #111 100%);
+            border-radius: 0 0 6px 6px;
+            position: absolute;
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            color: white;
+            font-size: 0.8rem;
             display: flex;
             align-items: flex-end;
             justify-content: center;
             padding-bottom: 10px;
-            font-weight: bold;
-            color: #666;
-        }
-
-        .black-key {
-            width: 25px;
-            height: 120px;
-            background: linear-gradient(to bottom, #333 0%, #000 100%);
-            border-radius: 0 0 3px 3px;
-            position: absolute;
-            z-index: 2;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
         .key:hover {
@@ -182,7 +222,15 @@
 
         .key.active {
             transform: translateY(4px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .white-key.active {
+            background: linear-gradient(to bottom, #e8f2ff 0%, #d0e8ff 100%);
+        }
+
+        .black-key.active {
+            background: linear-gradient(to bottom, #555 0%, #333 100%);
         }
 
         .exercise-area {
@@ -223,6 +271,10 @@
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(45deg, #28a745, #20c997);
         }
 
         .game-area {
@@ -329,6 +381,89 @@
             color: #856404;
         }
 
+        .midi-status {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 5px solid #28a745;
+        }
+
+        .midi-disconnected {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+        }
+
+        .recording-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .recording-status {
+            background: #fff3cd;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .recording-status.recording {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .method-books {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .book-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .book-title {
+            color: #667eea;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .exercise-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .exercise-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .exercise-list li:hover {
+            color: #667eea;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -344,60 +479,77 @@
             
             .piano-keyboard {
                 transform: scale(0.8);
+                overflow-x: auto;
+            }
+            
+            .language-selector {
+                position: static;
+                justify-content: center;
+                margin-bottom: 20px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="language-selector">
+        <button class="lang-btn active" onclick="switchLanguage('fr')">Français (Do-Ré-Mi)</button>
+        <button class="lang-btn" onclick="switchLanguage('en')">English (C-D-E)</button>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>🎹 PianoLearn</h1>
-            <p>Votre parcours d'apprentissage du piano personnalisé</p>
+            <p id="headerSubtitle">Votre parcours d'apprentissage du piano personnalisé</p>
         </div>
 
         <div class="main-content">
             <div class="navigation">
-                <button class="nav-btn active" onclick="showSection('test')">Test de Niveau</button>
-                <button class="nav-btn" onclick="showSection('lessons')">Cours</button>
-                <button class="nav-btn" onclick="showSection('exercises')">Exercices</button>
-                <button class="nav-btn" onclick="showSection('games')">Jeux</button>
-                <button class="nav-btn" onclick="showSection('solfege')">Solfège</button>
+                <button class="nav-btn active" onclick="showSection('test')" data-fr="Test de Niveau" data-en="Level Test">Test de Niveau</button>
+                <button class="nav-btn" onclick="showSection('lessons')" data-fr="Cours" data-en="Lessons">Cours</button>
+                <button class="nav-btn" onclick="showSection('exercises')" data-fr="Exercices" data-en="Exercises">Exercices</button>
+                <button class="nav-btn" onclick="showSection('games')" data-fr="Jeux" data-en="Games">Jeux</button>
+                <button class="nav-btn" onclick="showSection('solfege')" data-fr="Solfège" data-en="Music Theory">Solfège</button>
+            </div>
+
+            <!-- MIDI Status -->
+            <div id="midiStatus" class="midi-status midi-disconnected">
+                <strong data-fr="🎹 Clavier MIDI:" data-en="🎹 MIDI Keyboard:">🎹 Clavier MIDI:</strong>
+                <span id="midiStatusText" data-fr="Non connecté - Connectez un clavier MIDI pour une expérience complète" data-en="Not connected - Connect a MIDI keyboard for full experience">Non connecté - Connectez un clavier MIDI pour une expérience complète</span>
+                <button class="btn secondary" onclick="connectMIDI()" data-fr="Connecter MIDI" data-en="Connect MIDI">Connecter MIDI</button>
             </div>
 
             <!-- Test de Niveau -->
             <div id="test" class="section active">
                 <div class="level-test">
-                    <h2>Évaluation de Niveau</h2>
-                    <p>Répondez à ces questions pour déterminer votre niveau de piano</p>
+                    <h2 data-fr="Évaluation de Niveau" data-en="Level Assessment">Évaluation de Niveau</h2>
+                    <p data-fr="Répondez à ces questions pour déterminer votre niveau de piano" data-en="Answer these questions to determine your piano level">Répondez à ces questions pour déterminer votre niveau de piano</p>
                     
                     <div class="progress-bar">
                         <div class="progress-fill" id="testProgress"></div>
                     </div>
 
                     <div class="question-card">
-                        <h3>Question 1/5: Pouvez-vous identifier les notes sur le clavier?</h3>
-                        <div class="piano-keyboard" id="testKeyboard">
-                            <!-- Piano sera généré par JavaScript -->
-                        </div>
-                        <p>Cliquez sur la note DO</p>
+                        <h3 data-fr="Question 1/5: Pouvez-vous identifier les notes sur le clavier?" data-en="Question 1/5: Can you identify notes on the keyboard?">Question 1/5: Pouvez-vous identifier les notes sur le clavier?</h3>
+                        <div class="piano-keyboard" id="testKeyboard"></div>
+                        <p id="findNoteText" data-fr="Cliquez sur la note DO" data-en="Click on the note C">Cliquez sur la note DO</p>
                         <div class="options">
-                            <div class="option" onclick="selectOption(this, 'q1', 'a')">Je ne sais pas où elle se trouve</div>
-                            <div class="option" onclick="selectOption(this, 'q1', 'b')">Je peux la trouver avec de l'aide</div>
-                            <div class="option" onclick="selectOption(this, 'q1', 'c')">Je la trouve facilement</div>
+                            <div class="option" onclick="selectOption(this, 'q1', 'a')" data-fr="Je ne sais pas où elle se trouve" data-en="I don't know where it is">Je ne sais pas où elle se trouve</div>
+                            <div class="option" onclick="selectOption(this, 'q1', 'b')" data-fr="Je peux la trouver avec de l'aide" data-en="I can find it with help">Je peux la trouver avec de l'aide</div>
+                            <div class="option" onclick="selectOption(this, 'q1', 'c')" data-fr="Je la trouve facilement" data-en="I can find it easily">Je la trouve facilement</div>
                         </div>
                     </div>
 
                     <div class="question-card">
-                        <h3>Question 2/5: Connaissez-vous les accords de base?</h3>
+                        <h3 data-fr="Question 2/5: Connaissez-vous les accords de base?" data-en="Question 2/5: Do you know basic chords?">Question 2/5: Connaissez-vous les accords de base?</h3>
                         <div class="options">
-                            <div class="option" onclick="selectOption(this, 'q2', 'a')">Je ne connais aucun accord</div>
-                            <div class="option" onclick="selectOption(this, 'q2', 'b')">Je connais Do majeur et quelques autres</div>
-                            <div class="option" onclick="selectOption(this, 'q2', 'c')">Je connais plusieurs accords majeurs et mineurs</div>
+                            <div class="option" onclick="selectOption(this, 'q2', 'a')" data-fr="Je ne connais aucun accord" data-en="I don't know any chords">Je ne connais aucun accord</div>
+                            <div class="option" onclick="selectOption(this, 'q2', 'b')" data-fr="Je connais Do majeur et quelques autres" data-en="I know C major and a few others">Je connais Do majeur et quelques autres</div>
+                            <div class="option" onclick="selectOption(this, 'q2', 'c')" data-fr="Je connais plusieurs accords majeurs et mineurs" data-en="I know several major and minor chords">Je connais plusieurs accords majeurs et mineurs</div>
                         </div>
                     </div>
 
                     <div class="question-card">
-                        <h3>Question 3/5: Pouvez-vous lire une partition simple?</h3>
+                        <h3 data-fr="Question 3/5: Pouvez-vous lire une partition simple?" data-en="Question 3/5: Can you read simple sheet music?">Question 3/5: Pouvez-vous lire une partition simple?</h3>
                         <div class="staff">
                             <div class="staff-lines">
                                 <div class="staff-line" style="top: 10px;"></div>
@@ -408,19 +560,19 @@
                             </div>
                         </div>
                         <div class="options">
-                            <div class="option" onclick="selectOption(this, 'q3', 'a')">Je ne sais pas lire les partitions</div>
-                            <div class="option" onclick="selectOption(this, 'q3', 'b')">Je peux lire les notes simples lentement</div>
-                            <div class="option" onclick="selectOption(this, 'q3', 'c')">Je lis couramment les partitions</div>
+                            <div class="option" onclick="selectOption(this, 'q3', 'a')" data-fr="Je ne sais pas lire les partitions" data-en="I cannot read sheet music">Je ne sais pas lire les partitions</div>
+                            <div class="option" onclick="selectOption(this, 'q3', 'b')" data-fr="Je peux lire les notes simples lentement" data-en="I can read simple notes slowly">Je peux lire les notes simples lentement</div>
+                            <div class="option" onclick="selectOption(this, 'q3', 'c')" data-fr="Je lis couramment les partitions" data-en="I read sheet music fluently">Je lis couramment les partitions</div>
                         </div>
                     </div>
 
-                    <button class="btn" onclick="calculateLevel()">Voir mon niveau</button>
+                    <button class="btn" onclick="calculateLevel()" data-fr="Voir mon niveau" data-en="See my level">Voir mon niveau</button>
                     
                     <div id="levelResult" style="display: none;">
                         <div class="question-card">
-                            <h3>Votre Niveau: <span id="userLevel"></span></h3>
+                            <h3><span data-fr="Votre Niveau:" data-en="Your Level:">Votre Niveau:</span> <span id="userLevel"></span></h3>
                             <p id="levelDescription"></p>
-                            <button class="btn" onclick="startLessons()">Commencer les cours</button>
+                            <button class="btn" onclick="startLessons()" data-fr="Commencer les cours" data-en="Start lessons">Commencer les cours</button>
                         </div>
                     </div>
                 </div>
@@ -428,46 +580,66 @@
 
             <!-- Cours -->
             <div id="lessons" class="section">
-                <h2>Cours de Piano</h2>
+                <h2 data-fr="Cours de Piano" data-en="Piano Lessons">Cours de Piano</h2>
                 
                 <div class="lesson-content">
-                    <h3>Cours pour Débutants</h3>
-                    <div class="lesson-list">
-                        <div class="lesson-item" onclick="openLesson('posture')">
-                            <strong>Leçon 1: Posture et Position</strong>
-                            <span class="difficulty-badge debutant">Débutant</span>
-                            <p>Apprendre la bonne posture au piano</p>
+                    <h3 data-fr="Méthodes Utilisées" data-en="Methods Used">Méthodes Utilisées</h3>
+                    <div class="method-books">
+                        <div class="book-card">
+                            <div class="book-title">A Dozen a Day</div>
+                            <p data-fr="Exercices d'échauffement quotidiens pour développer la technique de base" data-en="Daily warm-up exercises to develop basic technique">Exercices d'échauffement quotidiens pour développer la technique de base</p>
+                            <ul class="exercise-list">
+                                <li onclick="openExercise('dozen', 1)" data-fr="Groupe 1: Préparatoire" data-en="Group 1: Preparatory">Groupe 1: Préparatoire</li>
+                                <li onclick="openExercise('dozen', 2)" data-fr="Groupe 2: Primaire" data-en="Group 2: Primary">Groupe 2: Primaire</li>
+                                <li onclick="openExercise('dozen', 3)" data-fr="Groupe 3: Élémentaire" data-en="Group 3: Elementary">Groupe 3: Élémentaire</li>
+                            </ul>
                         </div>
-                        <div class="lesson-item" onclick="openLesson('keyboard')">
-                            <strong>Leçon 2: Découverte du Clavier</strong>
-                            <span class="difficulty-badge debutant">Débutant</span>
-                            <p>Les touches blanches et noires, position des notes</p>
+
+                        <div class="book-card">
+                            <div class="book-title">Hanon - Le Pianiste Virtuose</div>
+                            <p data-fr="Exercices techniques pour l'agilité et l'indépendance des doigts" data-en="Technical exercises for finger agility and independence">Exercices techniques pour l'agilité et l'indépendance des doigts</p>
+                            <ul class="exercise-list">
+                                <li onclick="openExercise('hanon', 1)" data-fr="Exercices 1-20: Première partie" data-en="Exercises 1-20: First part">Exercices 1-20: Première partie</li>
+                                <li onclick="openExercise('hanon', 21)" data-fr="Exercices 21-43: Gammes" data-en="Exercises 21-43: Scales">Exercices 21-43: Gammes</li>
+                                <li onclick="openExercise('hanon', 44)" data-fr="Exercices 44-60: Arpèges" data-en="Exercises 44-60: Arpeggios">Exercices 44-60: Arpèges</li>
+                            </ul>
                         </div>
-                        <div class="lesson-item" onclick="openLesson('first-notes')">
-                            <strong>Leçon 3: Premières Notes</strong>
-                            <span class="difficulty-badge debutant">Débutant</span>
-                            <p>Do, Ré, Mi - vos premières notes</p>
+
+                        <div class="book-card">
+                            <div class="book-title">Schmoll - Méthode</div>
+                            <p data-fr="Méthode progressive pour l'apprentissage du piano" data-en="Progressive method for piano learning">Méthode progressive pour l'apprentissage du piano</p>
+                            <ul class="exercise-list">
+                                <li onclick="openExercise('schmoll', 1)" data-fr="Volume 1: Initiation" data-en="Volume 1: Initiation">Volume 1: Initiation</li>
+                                <li onclick="openExercise('schmoll', 2)" data-fr="Volume 2: Développement" data-en="Volume 2: Development">Volume 2: Développement</li>
+                                <li onclick="openExercise('schmoll', 3)" data-fr="Volume 3: Perfectionnement" data-en="Volume 3: Perfection">Volume 3: Perfectionnement</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
 
                 <div class="lesson-content">
-                    <h3>Cours Intermédiaires</h3>
+                    <h3 data-fr="Cours pour Débutants" data-en="Beginner Lessons">Cours pour Débutants</h3>
+                    <div class="lesson-list">
+                        <div class="lesson-item" onclick="openLesson('posture')">
+                            <strong data-fr="Leçon 1: Posture et Position" data-en="Lesson 1: Posture and Position">Leçon 1: Posture et Position</strong>
+                            <span class="difficulty-badge debutant" data-fr="Débutant" data-en="Beginner">Débutant</span>
+                            <p data-fr="Apprendre la bonne posture au piano" data-en="Learn proper piano posture">Apprendre la bonne posture au piano</p>
+                        </div>
+                        <div class="lesson-item" onclick="openLesson('keyboard')">
+                            <strong data-fr="Leçon 2: Découverte du Clavier" data-en="Lesson 2: Keyboard Discovery">Leçon 2: Découverte du Clavier</strong>
+                            <span class="difficulty-badge debutant" data-fr="Débutant" data-en="Beginner">Débutant</span>
+                            <p data-fr="Les touches blanches et noires, position des notes" data-en="White and black keys, note positions">Les touches blanches et noires, position des notes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-content">
+                    <h3 data-fr="Cours Intermédiaires" data-en="Intermediate Lessons">Cours Intermédiaires</h3>
                     <div class="lesson-list">
                         <div class="lesson-item" onclick="openLesson('scales')">
-                            <strong>Gammes et Arpèges</strong>
-                            <span class="difficulty-badge intermediaire">Intermédiaire</span>
-                            <p>Techniques avancées basées sur Hanon</p>
-                        </div>
-                        <div class="lesson-item" onclick="openLesson('harmony')">
-                            <strong>Harmonie et Accords</strong>
-                            <span class="difficulty-badge intermediaire">Intermédiaire</span>
-                            <p>Progressions harmoniques et analyse</p>
-                        </div>
-                        <div class="lesson-item" onclick="openLesson('expression')">
-                            <strong>Expression Musicale</strong>
-                            <span class="difficulty-badge intermediaire">Intermédiaire</span>
-                            <p>Dynamiques et phrasé musical</p>
+                            <strong data-fr="Gammes et Arpèges" data-en="Scales and Arpeggios">Gammes et Arpèges</strong>
+                            <span class="difficulty-badge intermediaire" data-fr="Intermédiaire" data-en="Intermediate">Intermédiaire</span>
+                            <p data-fr="Techniques avancées basées sur Hanon" data-en="Advanced techniques based on Hanon">Techniques avancées basées sur Hanon</p>
                         </div>
                     </div>
                 </div>
@@ -475,59 +647,61 @@
 
             <!-- Exercices -->
             <div id="exercises" class="section">
-                <h2>Exercices Pratiques</h2>
+                <h2 data-fr="Exercices Pratiques" data-en="Practical Exercises">Exercices Pratiques</h2>
                 
-                <div class="exercise-area">
-                    <h3>Exercices Quotidiens - A Dozen a Day</h3>
-                    <p>Exercices d'échauffement et de technique</p>
-                    <div class="piano-keyboard" id="exerciseKeyboard">
-                        <!-- Piano pour exercices -->
-                    </div>
-                    <button class="btn" onclick="startExercise('dozen')">Commencer les exercices</button>
+                <!-- Recording Controls -->
+                <div class="recording-controls">
+                    <button class="btn" onclick="startRecording()" data-fr="🎙️ Commencer l'enregistrement" data-en="🎙️ Start Recording">🎙️ Commencer l'enregistrement</button>
+                    <button class="btn" onclick="stopRecording()" data-fr="⏹️ Arrêter" data-en="⏹️ Stop">⏹️ Arrêter</button>
+                    <button class="btn" onclick="playRecording()" data-fr="▶️ Écouter" data-en="▶️ Play">▶️ Écouter</button>
+                    <button class="btn secondary" onclick="analyzePerformance()" data-fr="📊 Analyser ma pratique" data-en="📊 Analyze my practice">📊 Analyser ma pratique</button>
+                </div>
+                
+                <div id="recordingStatus" class="recording-status" style="display: none;">
+                    <span data-fr="⏺️ Enregistrement en cours..." data-en="⏺️ Recording in progress...">⏺️ Enregistrement en cours...</span>
                 </div>
 
                 <div class="exercise-area">
-                    <h3>Exercices Techniques - Hanon</h3>
-                    <p>Développement de la vélocité et de l'indépendance des doigts</p>
-                    <button class="btn" onclick="startExercise('hanon')">Exercices Hanon</button>
+                    <h3 data-fr="Exercices Quotidiens - A Dozen a Day" data-en="Daily Exercises - A Dozen a Day">Exercices Quotidiens - A Dozen a Day</h3>
+                    <p data-fr="Exercices d'échauffement et de technique" data-en="Warm-up and technique exercises">Exercices d'échauffement et de technique</p>
+                    <div class="piano-keyboard" id="exerciseKeyboard"></div>
+                    <button class="btn" onclick="startExercise('dozen')" data-fr="Commencer les exercices" data-en="Start exercises">Commencer les exercices</button>
                 </div>
 
                 <div class="exercise-area">
-                    <h3>Gammes et Arpèges</h3>
-                    <p>Pratique des gammes majeures et mineures</p>
-                    <button class="btn" onclick="startExercise('scales')">Pratiquer les gammes</button>
+                    <h3 data-fr="Exercices Techniques - Hanon" data-en="Technical Exercises - Hanon">Exercices Techniques - Hanon</h3>
+                    <p data-fr="Développement de la vélocité et de l'indépendance des doigts" data-en="Velocity development and finger independence">Développement de la vélocité et de l'indépendance des doigts</p>
+                    <button class="btn" onclick="startExercise('hanon')" data-fr="Exercices Hanon" data-en="Hanon Exercises">Exercices Hanon</button>
                 </div>
             </div>
 
             <!-- Jeux -->
             <div id="games" class="section">
                 <div class="game-area">
-                    <h2>🎮 Jeux Musicaux</h2>
-                    <div class="score">Score: <span id="gameScore">0</span></div>
+                    <h2 data-fr="🎮 Jeux Musicaux" data-en="🎮 Musical Games">🎮 Jeux Musicaux</h2>
+                    <div class="score"><span data-fr="Score:" data-en="Score:">Score:</span> <span id="gameScore">0</span></div>
                     
                     <div class="exercise-area">
-                        <h3>Note Recognition Game</h3>
-                        <p>Identifiez la note jouée!</p>
-                        <div class="piano-keyboard" id="gameKeyboard">
-                            <!-- Piano pour jeux -->
-                        </div>
-                        <button class="btn" onclick="startNoteGame()">Jouer</button>
+                        <h3 data-fr="Jeu de Reconnaissance des Notes" data-en="Note Recognition Game">Jeu de Reconnaissance des Notes</h3>
+                        <p data-fr="Identifiez la note jouée!" data-en="Identify the note played!">Identifiez la note jouée!</p>
+                        <div class="piano-keyboard" id="gameKeyboard"></div>
+                        <button class="btn" onclick="startNoteGame()" data-fr="Jouer" data-en="Play">Jouer</button>
                     </div>
 
                     <div class="exercise-area">
-                        <h3>Rhythm Challenge</h3>
-                        <p>Reproduisez le rythme!</p>
-                        <button class="btn" onclick="startRhythmGame()">Défi Rythme</button>
+                        <h3 data-fr="Défi Rythme" data-en="Rhythm Challenge">Défi Rythme</h3>
+                        <p data-fr="Reproduisez le rythme!" data-en="Reproduce the rhythm!">Reproduisez le rythme!</p>
+                        <button class="btn" onclick="startRhythmGame()" data-fr="Défi Rythme" data-en="Rhythm Challenge">Défi Rythme</button>
                     </div>
                 </div>
             </div>
 
             <!-- Solfège -->
             <div id="solfege" class="section">
-                <h2>Théorie Musicale et Solfège</h2>
+                <h2 data-fr="Théorie Musicale et Solfège" data-en="Music Theory and Solfège">Théorie Musicale et Solfège</h2>
                 
                 <div class="lesson-content">
-                    <h3>Les Bases du Solfège</h3>
+                    <h3 data-fr="Les Bases du Solfège" data-en="Solfège Basics">Les Bases du Solfège</h3>
                     <div class="staff">
                         <div class="staff-lines">
                             <div class="staff-line" style="top: 10px;"></div>
@@ -540,17 +714,21 @@
                         <div class="note" style="left: 30%; top: 30px;" onclick="playNote('D')"></div>
                         <div class="note" style="left: 40%; top: 25px;" onclick="playNote('E')"></div>
                     </div>
+                    <div class="piano-keyboard" id="solfegeKeyboard"></div>
                 </div>
 
                 <div class="lesson-content">
-                    <h3>Valeurs de Notes</h3>
-                    <p><strong>Ronde:</strong> 4 temps | <strong>Blanche:</strong> 2 temps | <strong>Noire:</strong> 1 temps | <strong>Croche:</strong> 1/2 temps</p>
+                    <h3 data-fr="Valeurs de Notes" data-en="Note Values">Valeurs de Notes</h3>
+                    <p data-fr="Ronde: 4 temps | Blanche: 2 temps | Noire: 1 temps | Croche: 1/2 temps" 
+                       data-en="Whole: 4 beats | Half: 2 beats | Quarter: 1 beat | Eighth: 1/2 beat">
+                       <strong>Ronde:</strong> 4 temps | <strong>Blanche:</strong> 2 temps | <strong>Noire:</strong> 1 temps | <strong>Croche:</strong> 1/2 temps
+                    </p>
                 </div>
 
                 <div class="lesson-content">
-                    <h3>Clés Musicales</h3>
-                    <p><strong>Clé de Sol:</strong> Pour les notes aigues (main droite)</p>
-                    <p><strong>Clé de Fa:</strong> Pour les notes graves (main gauche)</p>
+                    <h3 data-fr="Clés Musicales" data-en="Musical Clefs">Clés Musicales</h3>
+                    <p data-fr="Clé de Sol: Pour les notes aigues (main droite)" data-en="Treble Clef: For high notes (right hand)"><strong data-fr="Clé de Sol:" data-en="Treble Clef:">Clé de Sol:</strong> <span data-fr="Pour les notes aigues (main droite)" data-en="For high notes (right hand)">Pour les notes aigues (main droite)</span></p>
+                    <p data-fr="Clé de Fa: Pour les notes graves (main gauche)" data-en="Bass Clef: For low notes (left hand)"><strong data-fr="Clé de Fa:" data-en="Bass Clef:">Clé de Fa:</strong> <span data-fr="Pour les notes graves (main gauche)" data-en="For low notes (left hand)">Pour les notes graves (main gauche)</span></p>
                 </div>
             </div>
         </div>
@@ -558,10 +736,28 @@
 
     <script>
         // Variables globales
+        let currentLanguage = 'fr';
         let currentLevel = 'debutant';
         let testAnswers = {};
         let gameScore = 0;
         let currentQuestion = 1;
+        let midiAccess = null;
+        let midiInputs = [];
+        let isRecording = false;
+        let recordedNotes = [];
+        let recordingStartTime = 0;
+
+        // Définition des notes en français et anglais
+        const noteNames = {
+            fr: {
+                'C': 'Do', 'C#': 'Do#', 'D': 'Ré', 'D#': 'Ré#', 'E': 'Mi', 
+                'F': 'Fa', 'F#': 'Fa#', 'G': 'Sol', 'G#': 'Sol#', 'A': 'La', 'A#': 'La#', 'B': 'Si'
+            },
+            en: {
+                'C': 'C', 'C#': 'C#', 'D': 'D', 'D#': 'D#', 'E': 'E', 
+                'F': 'F', 'F#': 'F#', 'G': 'G', 'G#': 'G#', 'A': 'A', 'A#': 'A#', 'B': 'B'
+            }
+        };
 
         // Audio Context pour jouer des notes
         let audioContext;
@@ -576,7 +772,46 @@
             createPianoKeyboard('testKeyboard');
             createPianoKeyboard('exerciseKeyboard');
             createPianoKeyboard('gameKeyboard');
+            createPianoKeyboard('solfegeKeyboard');
+            updateLanguage();
         });
+
+        // Changement de langue
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Mettre à jour les boutons de langue
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateLanguage();
+            
+            // Recréer les claviers avec les nouveaux noms de notes
+            createPianoKeyboard('testKeyboard');
+            createPianoKeyboard('exerciseKeyboard');
+            createPianoKeyboard('gameKeyboard');
+            createPianoKeyboard('solfegeKeyboard');
+        }
+
+        // Mise à jour de la langue dans l'interface
+        function updateLanguage() {
+            document.querySelectorAll('[data-fr]').forEach(element => {
+                const text = currentLanguage === 'fr' ? element.getAttribute('data-fr') : element.getAttribute('data-en');
+                if (element.tagName === 'INPUT' || element.tagName === 'BUTTON') {
+                    element.textContent = text;
+                } else {
+                    element.textContent = text;
+                }
+            });
+            
+            // Mise à jour du texte de recherche de note
+            const findNoteText = document.getElementById('findNoteText');
+            if (findNoteText) {
+                findNoteText.textContent = currentLanguage === 'fr' ? 'Cliquez sur la note DO' : 'Click on the note C';
+            }
+        }
 
         // Navigation entre sections
         function showSection(sectionId) {
@@ -597,41 +832,45 @@
             event.target.classList.add('active');
         }
 
-        // Créer le clavier de piano
+        // Créer le clavier de piano avec un meilleur alignement
         function createPianoKeyboard(containerId) {
             const container = document.getElementById(containerId);
             if (!container) return;
             
             container.innerHTML = '';
             
-            const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-            const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-            const blackKeys = ['C#', 'D#', 'F#', 'G#', 'A#'];
+            const keyboardContainer = document.createElement('div');
+            keyboardContainer.className = 'keyboard-container';
             
-            let whiteKeyPosition = 0;
+            const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+            const blackKeyPositions = {
+                'C#': 0.75, 'D#': 1.75, 'F#': 3.75, 'G#': 4.75, 'A#': 5.75
+            };
             
             // Créer les touches blanches
             whiteKeys.forEach((note, index) => {
-                const key = document.createElement('div');
+                const key = document.createElement('button');
                 key.className = 'key white-key';
                 key.dataset.note = note;
-                key.style.left = `${whiteKeyPosition * 40}px`;
-                key.textContent = note;
+                key.textContent = noteNames[currentLanguage][note];
                 key.onclick = () => playNote(note, key);
-                container.appendChild(key);
-                whiteKeyPosition++;
+                key.style.position = 'relative';
+                key.style.zIndex = '1';
+                keyboardContainer.appendChild(key);
             });
             
             // Créer les touches noires
-            const blackKeyPositions = [0.7, 1.7, 3.7, 4.7, 5.7];
-            blackKeys.forEach((note, index) => {
-                const key = document.createElement('div');
+            Object.entries(blackKeyPositions).forEach(([note, position]) => {
+                const key = document.createElement('button');
                 key.className = 'key black-key';
                 key.dataset.note = note;
-                key.style.left = `${blackKeyPositions[index] * 40}px`;
+                key.textContent = noteNames[currentLanguage][note];
                 key.onclick = () => playNote(note, key);
-                container.appendChild(key);
+                key.style.left = `${position * 48 - 16}px`;
+                keyboardContainer.appendChild(key);
             });
+            
+            container.appendChild(keyboardContainer);
         }
 
         // Jouer une note
@@ -643,21 +882,19 @@
                 }, 200);
             }
             
+            // Enregistrer la note si en cours d'enregistrement
+            if (isRecording) {
+                recordedNotes.push({
+                    note: note,
+                    time: Date.now() - recordingStartTime
+                });
+            }
+            
             if (!audioContext) return;
             
             const frequencies = {
-                'C': 261.63,
-                'C#': 277.18,
-                'D': 293.66,
-                'D#': 311.13,
-                'E': 329.63,
-                'F': 349.23,
-                'F#': 369.99,
-                'G': 392.00,
-                'G#': 415.30,
-                'A': 440.00,
-                'A#': 466.16,
-                'B': 493.88
+                'C': 261.63, 'C#': 277.18, 'D': 293.66, 'D#': 311.13, 'E': 329.63,
+                'F': 349.23, 'F#': 369.99, 'G': 392.00, 'G#': 415.30, 'A': 440.00, 'A#': 466.16, 'B': 493.88
             };
             
             const oscillator = audioContext.createOscillator();
@@ -676,18 +913,137 @@
             oscillator.stop(audioContext.currentTime + 0.5);
         }
 
-        // Test de niveau
+        // Fonctions MIDI
+        async function connectMIDI() {
+            if (!navigator.requestMIDIAccess) {
+                alert(currentLanguage === 'fr' ? 
+                    'MIDI non supporté par ce navigateur' : 
+                    'MIDI not supported by this browser');
+                return;
+            }
+            
+            try {
+                midiAccess = await navigator.requestMIDIAccess();
+                midiInputs = Array.from(midiAccess.inputs.values());
+                
+                if (midiInputs.length === 0) {
+                    alert(currentLanguage === 'fr' ? 
+                        'Aucun appareil MIDI trouvé. Assurez-vous qu\'un clavier MIDI est connecté.' : 
+                        'No MIDI devices found. Make sure a MIDI keyboard is connected.');
+                    return;
+                }
+                
+                // Connecter tous les appareils MIDI
+                midiInputs.forEach(input => {
+                    input.onmidimessage = handleMIDIMessage;
+                });
+                
+                // Mettre à jour le statut
+                document.getElementById('midiStatus').className = 'midi-status';
+                document.getElementById('midiStatusText').textContent = currentLanguage === 'fr' ? 
+                    `Connecté: ${midiInputs.length} appareil(s) MIDI détecté(s)` :
+                    `Connected: ${midiInputs.length} MIDI device(s) detected`;
+                    
+            } catch (error) {
+                console.error('Erreur MIDI:', error);
+                alert(currentLanguage === 'fr' ? 
+                    'Erreur lors de la connexion MIDI' : 
+                    'Error connecting MIDI');
+            }
+        }
+
+        function handleMIDIMessage(message) {
+            const [command, note, velocity] = message.data;
+            
+            if (command === 144 && velocity > 0) { // Note ON
+                const noteName = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'][note % 12];
+                playNote(noteName);
+                
+                // Mettre en évidence la touche correspondante sur le clavier virtuel
+                const activeKeyboards = document.querySelectorAll('.section.active .piano-keyboard');
+                activeKeyboards.forEach(keyboard => {
+                    const key = keyboard.querySelector(`[data-note="${noteName}"]`);
+                    if (key) {
+                        key.classList.add('active');
+                        setTimeout(() => key.classList.remove('active'), 200);
+                    }
+                });
+            }
+        }
+
+        // Fonctions d'enregistrement
+        function startRecording() {
+            isRecording = true;
+            recordedNotes = [];
+            recordingStartTime = Date.now();
+            
+            document.getElementById('recordingStatus').style.display = 'block';
+            document.getElementById('recordingStatus').className = 'recording-status recording';
+            
+            // Réactiver le contexte audio si nécessaire
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            document.getElementById('recordingStatus').style.display = 'none';
+        }
+
+        function playRecording() {
+            if (recordedNotes.length === 0) {
+                alert(currentLanguage === 'fr' ? 
+                    'Aucun enregistrement disponible' : 
+                    'No recording available');
+                return;
+            }
+            
+            recordedNotes.forEach((noteData, index) => {
+                setTimeout(() => {
+                    playNote(noteData.note);
+                }, noteData.time);
+            });
+        }
+
+        function analyzePerformance() {
+            if (recordedNotes.length === 0) {
+                alert(currentLanguage === 'fr' ? 
+                    'Aucun enregistrement à analyser' : 
+                    'No recording to analyze');
+                return;
+            }
+            
+            // Analyse simple de la performance
+            const totalNotes = recordedNotes.length;
+            const duration = recordedNotes.length > 0 ? 
+                recordedNotes[recordedNotes.length - 1].time / 1000 : 0;
+            const notesPerSecond = totalNotes / duration;
+            
+            const analysis = currentLanguage === 'fr' ?
+                `Analyse de votre pratique:
+                - Notes jouées: ${totalNotes}
+                - Durée: ${duration.toFixed(1)} secondes
+                - Tempo moyen: ${notesPerSecond.toFixed(1)} notes/seconde
+                - Évaluation: ${notesPerSecond > 2 ? 'Bon rythme!' : notesPerSecond > 1 ? 'Rythme modéré' : 'Prenez votre temps'}` :
+                `Practice Analysis:
+                - Notes played: ${totalNotes}
+                - Duration: ${duration.toFixed(1)} seconds
+                - Average tempo: ${notesPerSecond.toFixed(1)} notes/second
+                - Assessment: ${notesPerSecond > 2 ? 'Good tempo!' : notesPerSecond > 1 ? 'Moderate tempo' : 'Take your time'}`;
+            
+            alert(analysis);
+        }
+
+        // Test de niveau (fonctions existantes)
         function selectOption(element, question, answer) {
-            // Enlever la sélection des autres options de la même question
             const questionCard = element.closest('.question-card');
             questionCard.querySelectorAll('.option').forEach(opt => {
                 opt.classList.remove('selected');
             });
             
-            // Sélectionner l'option cliquée
             element.classList.add('selected');
             testAnswers[question] = answer;
-            
             updateTestProgress();
         }
 
@@ -695,7 +1051,6 @@
             const totalQuestions = 5;
             const answeredQuestions = Object.keys(testAnswers).length;
             const progress = (answeredQuestions / totalQuestions) * 100;
-            
             document.getElementById('testProgress').style.width = `${progress}%`;
         }
 
@@ -713,17 +1068,23 @@
             let level, description;
             
             if (score <= 7) {
-                level = 'Débutant';
+                level = currentLanguage === 'fr' ? 'Débutant' : 'Beginner';
                 currentLevel = 'debutant';
-                description = 'Parfait pour commencer votre aventure musicale! Nous allons apprendre ensemble les bases du piano et du solfège.';
+                description = currentLanguage === 'fr' ? 
+                    'Parfait pour commencer votre aventure musicale! Nous allons apprendre ensemble les bases du piano et du solfège.' :
+                    'Perfect to start your musical adventure! We will learn together the basics of piano and music theory.';
             } else if (score <= 12) {
-                level = 'Intermédiaire';
+                level = currentLanguage === 'fr' ? 'Intermédiaire' : 'Intermediate';
                 currentLevel = 'intermediaire';
-                description = 'Vous avez déjà quelques bases! Nous allons approfondir vos connaissances et travailler sur des techniques plus avancées.';
+                description = currentLanguage === 'fr' ? 
+                    'Vous avez déjà quelques bases! Nous allons approfondir vos connaissances et travailler sur des techniques plus avancées.' :
+                    'You already have some basics! We will deepen your knowledge and work on more advanced techniques.';
             } else {
-                level = 'Avancé';
+                level = currentLanguage === 'fr' ? 'Avancé' : 'Advanced';
                 currentLevel = 'avance';
-                description = 'Excellent niveau! Nous nous concentrerons sur le perfectionnement de votre technique et l\'expression musicale.';
+                description = currentLanguage === 'fr' ? 
+                    'Excellent niveau! Nous nous concentrerons sur le perfectionnement de votre technique et l\'expression musicale.' :
+                    'Excellent level! We will focus on perfecting your technique and musical expression.';
             }
             
             document.getElementById('userLevel').textContent = level;
@@ -733,7 +1094,6 @@
 
         function startLessons() {
             showSection('lessons');
-            // Simuler un clic sur le bouton des cours
             const lessonsBtn = document.querySelector('[onclick="showSection(\'lessons\')"]');
             lessonsBtn.classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -741,35 +1101,53 @@
             });
         }
 
-        // Ouvrir une leçon
+        // Exercices et leçons
         function openLesson(lessonId) {
-            alert(`Ouverture de la leçon: ${lessonId}\nContenu détaillé de la leçon sera implémenté ici.`);
+            const lessonContent = currentLanguage === 'fr' ? 
+                `Ouverture de la leçon: ${lessonId}\nContenu détaillé de la leçon sera implémenté ici.` :
+                `Opening lesson: ${lessonId}\nDetailed lesson content will be implemented here.`;
+            alert(lessonContent);
         }
 
-        // Exercices
+        function openExercise(method, level) {
+            const exerciseContent = currentLanguage === 'fr' ? 
+                `Ouverture de l'exercice ${method} - Niveau ${level}\nExercices détaillés seront implémentés ici.` :
+                `Opening ${method} exercise - Level ${level}\nDetailed exercises will be implemented here.`;
+            alert(exerciseContent);
+        }
+
         function startExercise(type) {
-            switch(type) {
-                case 'dozen':
-                    alert('Démarrage des exercices "A Dozen a Day":\n- Échauffement des doigts\n- Exercices de coordination\n- Patterns mélodiques');
-                    break;
-                case 'hanon':
-                    alert('Exercices Hanon:\n- Développement de la vélocité\n- Indépendance des doigts\n- Égalité et force');
-                    break;
-                case 'scales':
-                    alert('Pratique des gammes:\n- Do majeur\n- Gammes mineures\n- Arpèges');
-                    break;
-            }
+            const exercises = {
+                fr: {
+                    'dozen': 'Démarrage des exercices "A Dozen a Day":\n- Échauffement des doigts\n- Exercices de coordination\n- Patterns mélodiques',
+                    'hanon': 'Exercices Hanon:\n- Développement de la vélocité\n- Indépendance des doigts\n- Égalité et force',
+                    'scales': 'Pratique des gammes:\n- Do majeur\n- Gammes mineures\n- Arpèges'
+                },
+                en: {
+                    'dozen': 'Starting "A Dozen a Day" exercises:\n- Finger warm-up\n- Coordination exercises\n- Melodic patterns',
+                    'hanon': 'Hanon exercises:\n- Velocity development\n- Finger independence\n- Equality and strength',
+                    'scales': 'Scale practice:\n- C major\n- Minor scales\n- Arpeggios'
+                }
+            };
+            
+            alert(exercises[currentLanguage][type]);
         }
 
         // Jeux
         function startNoteGame() {
-            alert('Jeu de reconnaissance des notes!\nÉcoutez la note et cliquez sur la bonne touche du piano.');
+            const message = currentLanguage === 'fr' ? 
+                'Jeu de reconnaissance des notes!\nÉcoutez la note et cliquez sur la bonne touche du piano.' :
+                'Note recognition game!\nListen to the note and click on the correct piano key.';
+            alert(message);
             gameScore = 0;
             updateScore();
         }
 
         function startRhythmGame() {
-            alert('Défi rythmique!\nÉcoutez le rythme et reproduisez-le en tapant sur les touches.');
+            const message = currentLanguage === 'fr' ? 
+                'Défi rythmique!\nÉcoutez le rythme et reproduisez-le en tapant sur les touches.' :
+                'Rhythm challenge!\nListen to the rhythm and reproduce it by tapping the keys.';
+            alert(message);
         }
 
         function updateScore() {
