@@ -1,0 +1,391 @@
+/* 
+ * PianoLearn - Styles Principaux
+ * Application d'apprentissage piano
+ */
+
+/* Variables CSS pour une maintenance facile */
+:root {
+  --primary-color: #667eea;
+  --secondary-color: #764ba2;
+  --accent-color: #ff6b6b;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --error-color: #dc3545;
+  
+  --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --card-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  --hover-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  
+  --border-radius: 15px;
+  --transition: all 0.3s ease;
+}
+
+/* Reset et base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Conteneur principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  color: white;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Sélecteur de langue */
+.language-selector {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.lang-btn {
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.9rem;
+}
+
+.lang-btn:hover {
+  background: rgba(255,255,255,0.3);
+  transform: translateY(-2px);
+}
+
+.lang-btn.active {
+  background: rgba(255,255,255,0.4);
+  border-color: rgba(255,255,255,0.8);
+}
+
+/* Contenu principal */
+.main-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(10px);
+}
+
+/* Navigation */
+.navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.nav-btn {
+  padding: 12px 24px;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.nav-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.nav-btn.active {
+  background: linear-gradient(45deg, var(--accent-color), #ee5a24);
+}
+
+/* Sections */
+.section {
+  display: none;
+  animation: fadeInUp 0.6s ease;
+}
+
+.section.active {
+  display: block;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cartes */
+.question-card,
+.lesson-content,
+.exercise-area {
+  background: #f8f9ff;
+  padding: 25px;
+  border-radius: var(--border-radius);
+  margin: 20px 0;
+  box-shadow: var(--card-shadow);
+  transition: var(--transition);
+}
+
+.question-card:hover,
+.lesson-content:hover,
+.exercise-area:hover {
+  box-shadow: var(--hover-shadow);
+  transform: translateY(-2px);
+}
+
+.question-card h3,
+.lesson-content h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+/* Boutons */
+.btn {
+  padding: 12px 24px;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: var(--transition);
+  margin: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn.secondary {
+  background: linear-gradient(45deg, var(--success-color), #20c997);
+}
+
+.btn.warning {
+  background: linear-gradient(45deg, var(--warning-color), #fd7e14);
+}
+
+.btn.error {
+  background: linear-gradient(45deg, var(--error-color), #c82333);
+}
+
+/* Barre de progression */
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #e9ecef;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 20px 0;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  width: 0%;
+  transition: width 0.6s ease;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* États et status */
+.midi-status {
+  background: #e8f5e8;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 15px 0;
+  border-left: 5px solid var(--success-color);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.midi-status.midi-disconnected {
+  background: #f8d7da;
+  border-left-color: var(--error-color);
+}
+
+.recording-status {
+  background: #fff3cd;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+  border-left: 4px solid var(--warning-color);
+  text-align: center;
+  font-weight: 600;
+}
+
+.recording-status.recording {
+  background: #f8d7da;
+  border-left-color: var(--error-color);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .main-content {
+    padding: 20px;
+  }
+  
+  .language-selector {
+    position: static;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .navigation {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .nav-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .midi-status {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .main-content {
+    padding: 15px;
+    margin: 10px;
+  }
+  
+  .question-card,
+  .lesson-content,
+  .exercise-area {
+    padding: 20px 15px;
+  }
+}
+
+/* Améliorations d'accessibilité */
+.btn:focus,
+.nav-btn:focus,
+.lang-btn:focus {
+  outline: 3px solid var(--warning-color);
+  outline-offset: 2px;
+}
+
+/* Animations d'entrée pour les éléments */
+.question-card,
+.lesson-content,
+.exercise-area {
+  animation: slideInFromLeft 0.6s ease forwards;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Mode sombre (optionnel - à activer par JavaScript) */
+@media (prefers-color-scheme: dark) {
+  .main-content {
+    background: rgba(40, 44, 52, 0.95);
+    color: #e6e6e6;
+  }
+  
+  .question-card,
+  .lesson-content,
+  .exercise-area {
+    background: #353a42;
+    color: #e6e6e6;
+  }
+  
+  .question-card h3,
+  .lesson-content h3 {
+    color: #8ab4f8;
+  }
+}
