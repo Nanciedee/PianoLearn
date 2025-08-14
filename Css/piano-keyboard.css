@@ -317,3 +317,30 @@
   transform: translateX(-50%);
   font-size: 0.75rem;
   font-weight: bold;
+  opacity: 0.8;
+}
+
+/* Effets de particules pour les notes jouées (optionnel) */
+.key.particle-effect::after {
+  content: '♪';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2rem;
+  color: #667eea;
+  opacity: 0;
+  animation: noteParticle 0.8s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes noteParticle {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-30px);
+  }
+}
