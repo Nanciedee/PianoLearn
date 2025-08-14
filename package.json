@@ -1,0 +1,107 @@
+{
+  "name": "piano-learning-app",
+  "version": "1.0.0",
+  "description": "Application web interactive pour l'apprentissage du piano avec support MIDI",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000 --open=/index.html",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "lint": "eslint js/**/*.js",
+    "lint:fix": "eslint js/**/*.js --fix",
+    "build": "npm run minify-css && npm run minify-js",
+    "minify-css": "cleancss -o dist/styles.min.css css/*.css",
+    "minify-js": "uglifyjs js/*.js -c -m -o dist/app.min.js",
+    "deploy": "npm run build && gh-pages -d .",
+    "serve": "python3 -m http.server 8000",
+    "validate-html": "html-validate index.html",
+    "validate-css": "css-validator css/*.css",
+    "optimize-images": "imagemin assets/images/* --out-dir=assets/images/optimized",
+    "generate-docs": "jsdoc js/**/*.js -d docs/api"
+  },
+  "keywords": [
+    "piano",
+    "music",
+    "education",
+    "midi",
+    "web-audio",
+    "learning",
+    "hanon",
+    "solfege",
+    "interactive",
+    "français",
+    "english"
+  ],
+  "author": {
+    "name": "Votre Nom",
+    "email": "votre.email@example.com",
+    "url": "https://github.com/votre-username"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/votre-username/piano-learning-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/votre-username/piano-learning-app/issues"
+  },
+  "homepage": "https://votre-username.github.io/piano-learning-app",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "live-server": "^1.2.2",
+    "clean-css-cli": "^5.6.2",
+    "uglify-js": "^3.17.4",
+    "gh-pages": "^6.0.0",
+    "eslint": "^8.50.0",
+    "html-validate": "^8.5.0",
+    "css-validator": "^1.0.0",
+    "imagemin": "^8.0.1",
+    "imagemin-cli": "^7.0.0",
+    "jsdoc": "^4.0.2",
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "babel-jest": "^29.7.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+    "collectCoverageFrom": [
+      "js/**/*.js",
+      "!js/**/*.min.js",
+      "!**/node_modules/**"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    }
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "jest": true
+    },
+    "extends": ["eslint:recommended"],
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-unuse
