@@ -1,0 +1,319 @@
+/*
+ * PianoLearn - Styles du Clavier Piano
+ * Styles spécifiques pour le clavier virtuel
+ */
+
+/* Conteneur du clavier */
+.piano-keyboard {
+  display: flex;
+  justify-content: center;
+  margin: 30px auto;
+  position: relative;
+  height: 200px;
+  width: fit-content;
+  padding: 0 20px;
+  user-select: none;
+}
+
+/* Conteneur des touches */
+.keyboard-container {
+  position: relative;
+  display: flex;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+}
+
+/* Styles de base pour toutes les touches */
+.key {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-weight: 600;
+}
+
+/* Animation au focus pour l'accessibilité */
+.key:focus {
+  outline: 3px solid #ffc107;
+  outline-offset: 3px;
+  z-index: 10;
+}
+
+/* Touches blanches */
+.white-key {
+  width: 48px;
+  height: 200px;
+  background: linear-gradient(to bottom, 
+    #ffffff 0%, 
+    #f8f8f8 50%, 
+    #f0f0f0 100%);
+  border: 1px solid #ddd;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.1),
+    inset 0 1px 1px rgba(255,255,255,0.8);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 15px;
+  color: #555;
+  font-size: 0.9rem;
+  margin-right: -1px;
+  z-index: 1;
+}
+
+/* Effet hover pour touches blanches */
+.white-key:hover {
+  background: linear-gradient(to bottom, 
+    #f8f8ff 0%, 
+    #f0f0f8 50%, 
+    #e8e8f0 100%);
+  transform: translateY(2px);
+  box-shadow: 
+    0 1px 2px rgba(0,0,0,0.2),
+    inset 0 1px 1px rgba(255,255,255,0.9);
+}
+
+/* Touches blanches actives */
+.white-key.active {
+  background: linear-gradient(to bottom, 
+    #e8f2ff 0%, 
+    #d0e8ff 50%, 
+    #b8deff 100%);
+  transform: translateY(4px);
+  box-shadow: 
+    0 1px 2px rgba(0,0,0,0.3),
+    inset 0 2px 4px rgba(102, 126, 234, 0.2);
+  color: #667eea;
+}
+
+/* Touches noires */
+.black-key {
+  width: 32px;
+  height: 130px;
+  background: linear-gradient(to bottom, 
+    #444 0%, 
+    #222 50%, 
+    #111 100%);
+  border-radius: 0 0 6px 6px;
+  position: absolute;
+  z-index: 2;
+  box-shadow: 
+    0 4px 8px rgba(0,0,0,0.4),
+    inset 0 1px 1px rgba(255,255,255,0.1);
+  color: #ccc;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+/* Effet hover pour touches noires */
+.black-key:hover {
+  background: linear-gradient(to bottom, 
+    #555 0%, 
+    #333 50%, 
+    #222 100%);
+  transform: translateY(2px);
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.6),
+    inset 0 1px 1px rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+/* Touches noires actives */
+.black-key.active {
+  background: linear-gradient(to bottom, 
+    #666 0%, 
+    #444 50%, 
+    #333 100%);
+  transform: translateY(4px);
+  box-shadow: 
+    0 1px 2px rgba(0,0,0,0.8),
+    inset 0 2px 4px rgba(102, 126, 234, 0.3);
+  color: #8ab4f8;
+}
+
+/* Positionnement des touches noires */
+.black-key[data-note="C#"] { left: 32px; }
+.black-key[data-note="D#"] { left: 80px; }
+.black-key[data-note="F#"] { left: 176px; }
+.black-key[data-note="G#"] { left: 224px; }
+.black-key[data-note="A#"] { left: 272px; }
+
+/* Animations spéciales */
+@keyframes keyPress {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.key.pressed {
+  animation: keyPress 0.15s ease;
+}
+
+/* États MIDI */
+.key.midi-active {
+  box-shadow: 
+    0 0 10px rgba(102, 126, 234, 0.6),
+    inset 0 0 10px rgba(102, 126, 234, 0.2);
+}
+
+.white-key.midi-active {
+  background: linear-gradient(to bottom, 
+    #e8f4ff 0%, 
+    #d0e8ff 50%, 
+    #b8deff 100%);
+  border-color: #667eea;
+}
+
+.black-key.midi-active {
+  background: linear-gradient(to bottom, 
+    #667eea 0%, 
+    #5a6fd8 50%, 
+    #4d60c6 100%);
+  color: white;
+}
+
+/* Responsive pour le clavier */
+@media (max-width: 768px) {
+  .piano-keyboard {
+    transform: scale(0.85);
+    overflow-x: auto;
+    padding: 0 10px;
+  }
+  
+  .keyboard-container {
+    min-width: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .piano-keyboard {
+    transform: scale(0.7);
+    height: 170px;
+  }
+  
+  .white-key {
+    width: 42px;
+    height: 180px;
+    font-size: 0.8rem;
+    padding-bottom: 12px;
+  }
+  
+  .black-key {
+    width: 28px;
+    height: 115px;
+    font-size: 0.7rem;
+    padding-bottom: 8px;
+  }
+  
+  /* Ajustement des positions pour mobile */
+  .black-key[data-note="C#"] { left: 28px; }
+  .black-key[data-note="D#"] { left: 70px; }
+  .black-key[data-note="F#"] { left: 154px; }
+  .black-key[data-note="G#"] { left: 196px; }
+  .black-key[data-note="A#"] { left: 238px; }
+}
+
+/* Améliorations pour l'accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  .key {
+    transition: none;
+  }
+  
+  .key.pressed {
+    animation: none;
+    transform: translateY(2px);
+  }
+}
+
+/* Mode contraste élevé */
+@media (prefers-contrast: high) {
+  .white-key {
+    border: 2px solid #000;
+    color: #000;
+  }
+  
+  .black-key {
+    border: 2px solid #fff;
+    color: #fff;
+  }
+  
+  .key:focus {
+    outline: 4px solid #ff0000;
+  }
+}
+
+/* Animation pour les notes jouées via MIDI */
+@keyframes midiGlow {
+  0% {
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+  }
+}
+
+.key.midi-triggered {
+  animation: midiGlow 0.3s ease;
+}
+
+/* Indicateurs visuels pour l'apprentissage */
+.key.correct {
+  box-shadow: 0 0 15px rgba(40, 167, 69, 0.8);
+}
+
+.key.incorrect {
+  box-shadow: 0 0 15px rgba(220, 53, 69, 0.8);
+}
+
+.key.hint {
+  animation: hint 1s ease infinite;
+}
+
+@keyframes hint {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Styles pour les différents contextes d'utilisation */
+.piano-keyboard.game-mode .key:hover {
+  transform: translateY(1px) scale(1.02);
+}
+
+.piano-keyboard.exercise-mode .key.target {
+  border: 3px solid #ffc107;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+}
+
+.piano-keyboard.recording-mode .key {
+  transition: all 0.1s ease;
+}
+
+/* Labels des notes (optionnel, visible selon les préférences) */
+.key .note-label {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  font-weight: bold;
