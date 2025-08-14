@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PianoLearn - Cours de Piano en Ligne</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .level-test {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question-card {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .question-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .option {
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid #e0e6ff;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .piano-keyboard {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            position: relative;
+            height: 200px;
+        }
+
+        .key {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            user-select: none;
+        }
+
+        .white-key {
+            width: 40px;
+            height: 200px;
+            background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+            border: 1px solid #ccc;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .black-key {
+            width: 25px;
+            height: 120px;
+            background: linear-gradient(to bottom, #333 0%, #000 100%);
+            border-radius: 0 0 3px 3px;
+            position: absolute;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .key:hover {
+            transform: translateY(2px);
+        }
+
+        .key.active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .exercise-area {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e6ff;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .game-area {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 20px;
+            color: white;
+            margin: 20px 0;
+        }
+
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .staff {
+            background: white;
+            height: 120px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .staff-lines {
+            position: absolute;
+            width: 90%;
+            height: 80px;
+        }
+
+        .staff-line {
+            width: 100%;
+            height: 2px;
+            background: #333;
+            position: absolute;
+        }
+
+        .note {
+            width: 20px;
+            height: 15px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .note:hover {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+
+        .lesson-content {
+            background: #f8f9ff;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 15px 0;
+        }
+
+        .lesson-content h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .lesson-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .lesson-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lesson-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .debutant {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .intermediaire {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .piano-keyboard {
+                transform: scale(0.8);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎹 PianoLearn</h1>
+            <p>Votre parcours d'apprentissage du piano personnalisé</p>
+        </div>
+
+        <div class="main-content">
+            <div class="navigation">
+                <button class="nav-btn active" onclick="showSection('test')">Test de Niveau</button>
+                <button class="nav-btn" onclick="showSection('lessons')">Cours</button>
+                <button class="nav-btn" onclick="showSection('exercises')">Exercices</button>
+                <button class="nav-btn" onclick="showSection('games')">Jeux</button>
+                <button class="nav-btn" onclick="showSection('solfege')">Solfège</button>
+            </div>
+
+            <!-- Test de Niveau -->
+            <div id="test" class="section active">
+                <div class="level-test">
+                    <h2>Évaluation de Niveau</h2>
+                    <p>Répondez à ces questions pour déterminer votre niveau de piano</p>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="testProgress"></div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Question 1/5: Pouvez-vous identifier les notes sur le clavier?</h3>
+                        <div class="piano-keyboard" id="testKeyboard">
+                            <!-- Piano sera généré par JavaScript -->
+                        </div>
+                        <p>Cliquez sur la note DO</p>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 'q1', 'a')">Je ne sais pas où elle se trouve</div>
+                            <div class="option" onclick="selectOption(this, 'q1', 'b')">Je peux la trouver avec de l'aide</div>
+                            <div class="option" onclick="selectOption(this, 'q1', 'c')">Je la trouve facilement</div>
+                        </div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Question 2/5: Connaissez-vous les accords de base?</h3>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 'q2', 'a')">Je ne connais aucun accord</div>
+                            <div class="option" onclick="selectOption(this, 'q2', 'b')">Je connais Do majeur et quelques autres</div>
+                            <div class="option" onclick="selectOption(this, 'q2', 'c')">Je connais plusieurs accords majeurs et mineurs</div>
+                        </div>
+                    </div>
+
+                    <div class="question-card">
+                        <h3>Question 3/5: Pouvez-vous lire une partition simple?</h3>
+                        <div class="staff">
+                            <div class="staff-lines">
+                                <div class="staff-line" style="top: 10px;"></div>
+                                <div class="staff-line" style="top: 25px;"></div>
+                                <div class="staff-line" style="top: 40px;"></div>
+                                <div class="staff-line" style="top: 55px;"></div>
+                                <div class="staff-line" style="top: 70px;"></div>
+                            </div>
+                        </div>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 'q3', 'a')">Je ne sais pas lire les partitions</div>
+                            <div class="option" onclick="selectOption(this, 'q3', 'b')">Je peux lire les notes simples lentement</div>
+                            <div class="option" onclick="selectOption(this, 'q3', 'c')">Je lis couramment les partitions</div>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="calculateLevel()">Voir mon niveau</button>
+                    
+                    <div id="levelResult" style="display: none;">
+                        <div class="question-card">
+                            <h3>Votre Niveau: <span id="userLevel"></span></h3>
+                            <p id="levelDescription"></p>
+                            <button class="btn" onclick="startLessons()">Commencer les cours</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cours -->
+            <div id="lessons" class="section">
+                <h2>Cours de Piano</h2>
+                
+                <div class="lesson-content">
+                    <h3>Cours pour Débutants</h3>
+                    <div class="lesson-list">
+                        <div class="lesson-item" onclick="openLesson('posture')">
+                            <strong>Leçon 1: Posture et Position</strong>
+                            <span class="difficulty-badge debutant">Débutant</span>
+                            <p>Apprendre la bonne posture au piano</p>
+                        </div>
+                        <div class="lesson-item" onclick="openLesson('keyboard')">
+                            <strong>Leçon 2: Découverte du Clavier</strong>
+                            <span class="difficulty-badge debutant">Débutant</span>
+                            <p>Les touches blanches et noires, position des notes</p>
+                        </div>
+                        <div class="lesson-item" onclick="openLesson('first-notes')">
+                            <strong>Leçon 3: Premières Notes</strong>
+                            <span class="difficulty-badge debutant">Débutant</span>
+                            <p>Do, Ré, Mi - vos premières notes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lesson-content">
+                    <h3>Cours Intermédiaires</h3>
+                    <div class="lesson-list">
+                        <div class="lesson-item" onclick="openLesson('scales')">
+                            <strong>Gammes et Arpèges</strong>
+                            <span class="difficulty-badge intermediaire">Intermédiaire</span>
+                            <p>Techniques avancées basées sur Hanon</p>
+                        </div>
+                        <div class="lesson-item" onclick="openLesson('harmony')">
+                            <strong>Harmonie et Accords</strong>
+                            <span class="difficulty-badge intermediaire">Intermédiaire</span>
+                            <p>Progressions harmoniques et analyse</p>
+                        </div>
+                        <div class="lesson-item" onclick="openLesson('expression')">
+                            <strong>Expression Musicale</strong>
+                            <span class="difficulty-badge intermediaire">Intermédiaire</span>
+                            <p>Dynamiques et phrasé musical</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercices -->
+            <div id="exercises" class="section">
+                <h2>Exercices Pratiques</h2>
+                
+                <div class="exercise-area">
+                    <h3>Exercices Quotidiens - A Dozen a Day</h3>
+                    <p>Exercices d'échauffement et de technique</p>
+                    <div class="piano-keyboard" id="exerciseKeyboard">
+                        <!-- Piano pour exercices -->
+                    </div>
+                    <button class="btn" onclick="startExercise('dozen')">Commencer les exercices</button>
+                </div>
+
+                <div class="exercise-area">
+                    <h3>Exercices Techniques - Hanon</h3>
+                    <p>Développement de la vélocité et de l'indépendance des doigts</p>
+                    <button class="btn" onclick="startExercise('hanon')">Exercices Hanon</button>
+                </div>
+
+                <div class="exercise-area">
+                    <h3>Gammes et Arpèges</h3>
+                    <p>Pratique des gammes majeures et mineures</p>
+                    <button class="btn" onclick="startExercise('scales')">Pratiquer les gammes</button>
+                </div>
+            </div>
+
+            <!-- Jeux -->
+            <div id="games" class="section">
+                <div class="game-area">
+                    <h2>🎮 Jeux Musicaux</h2>
+                    <div class="score">Score: <span id="gameScore">0</span></div>
+                    
+                    <div class="exercise-area">
+                        <h3>Note Recognition Game</h3>
+                        <p>Identifiez la note jouée!</p>
+                        <div class="piano-keyboard" id="gameKeyboard">
+                            <!-- Piano pour jeux -->
+                        </div>
+                        <button class="btn" onclick="startNoteGame()">Jouer</button>
+                    </div>
+
+                    <div class="exercise-area">
+                        <h3>Rhythm Challenge</h3>
+                        <p>Reproduisez le rythme!</p>
+                        <button class="btn" onclick="startRhythmGame()">Défi Rythme</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solfège -->
+            <div id="solfege" class="section">
+                <h2>Théorie Musicale et Solfège</h2>
+                
+                <div class="lesson-content">
+                    <h3>Les Bases du Solfège</h3>
+                    <div class="staff">
+                        <div class="staff-lines">
+                            <div class="staff-line" style="top: 10px;"></div>
+                            <div class="staff-line" style="top: 25px;"></div>
+                            <div class="staff-line" style="top: 40px;"></div>
+                            <div class="staff-line" style="top: 55px;"></div>
+                            <div class="staff-line" style="top: 70px;"></div>
+                        </div>
+                        <div class="note" style="left: 20%; top: 35px;" onclick="playNote('C')"></div>
+                        <div class="note" style="left: 30%; top: 30px;" onclick="playNote('D')"></div>
+                        <div class="note" style="left: 40%; top: 25px;" onclick="playNote('E')"></div>
+                    </div>
+                </div>
+
+                <div class="lesson-content">
+                    <h3>Valeurs de Notes</h3>
+                    <p><strong>Ronde:</strong> 4 temps | <strong>Blanche:</strong> 2 temps | <strong>Noire:</strong> 1 temps | <strong>Croche:</strong> 1/2 temps</p>
+                </div>
+
+                <div class="lesson-content">
+                    <h3>Clés Musicales</h3>
+                    <p><strong>Clé de Sol:</strong> Pour les notes aigues (main droite)</p>
+                    <p><strong>Clé de Fa:</strong> Pour les notes graves (main gauche)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let currentLevel = 'debutant';
+        let testAnswers = {};
+        let gameScore = 0;
+        let currentQuestion = 1;
+
+        // Audio Context pour jouer des notes
+        let audioContext;
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+            console.log('Web Audio API not supported');
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            createPianoKeyboard('testKeyboard');
+            createPianoKeyboard('exerciseKeyboard');
+            createPianoKeyboard('gameKeyboard');
+        });
+
+        // Navigation entre sections
+        function showSection(sectionId) {
+            // Cacher toutes les sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Enlever la classe active de tous les boutons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Afficher la section sélectionnée
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Activer le bouton correspondant
+            event.target.classList.add('active');
+        }
+
+        // Créer le clavier de piano
+        function createPianoKeyboard(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+            const blackKeys = ['C#', 'D#', 'F#', 'G#', 'A#'];
+            
+            let whiteKeyPosition = 0;
+            
+            // Créer les touches blanches
+            whiteKeys.forEach((note, index) => {
+                const key = document.createElement('div');
+                key.className = 'key white-key';
+                key.dataset.note = note;
+                key.style.left = `${whiteKeyPosition * 40}px`;
+                key.textContent = note;
+                key.onclick = () => playNote(note, key);
+                container.appendChild(key);
+                whiteKeyPosition++;
+            });
+            
+            // Créer les touches noires
+            const blackKeyPositions = [0.7, 1.7, 3.7, 4.7, 5.7];
+            blackKeys.forEach((note, index) => {
+                const key = document.createElement('div');
+                key.className = 'key black-key';
+                key.dataset.note = note;
+                key.style.left = `${blackKeyPositions[index] * 40}px`;
+                key.onclick = () => playNote(note, key);
+                container.appendChild(key);
+            });
+        }
+
+        // Jouer une note
+        function playNote(note, keyElement) {
+            if (keyElement) {
+                keyElement.classList.add('active');
+                setTimeout(() => {
+                    keyElement.classList.remove('active');
+                }, 200);
+            }
+            
+            if (!audioContext) return;
+            
+            const frequencies = {
+                'C': 261.63,
+                'C#': 277.18,
+                'D': 293.66,
+                'D#': 311.13,
+                'E': 329.63,
+                'F': 349.23,
+                'F#': 369.99,
+                'G': 392.00,
+                'G#': 415.30,
+                'A': 440.00,
+                'A#': 466.16,
+                'B': 493.88
+            };
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(frequencies[note], audioContext.currentTime);
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        }
+
+        // Test de niveau
+        function selectOption(element, question, answer) {
+            // Enlever la sélection des autres options de la même question
+            const questionCard = element.closest('.question-card');
+            questionCard.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Sélectionner l'option cliquée
+            element.classList.add('selected');
+            testAnswers[question] = answer;
+            
+            updateTestProgress();
+        }
+
+        function updateTestProgress() {
+            const totalQuestions = 5;
+            const answeredQuestions = Object.keys(testAnswers).length;
+            const progress = (answeredQuestions / totalQuestions) * 100;
+            
+            document.getElementById('testProgress').style.width = `${progress}%`;
+        }
+
+        function calculateLevel() {
+            const answers = Object.values(testAnswers);
+            const score = answers.reduce((sum, answer) => {
+                switch(answer) {
+                    case 'a': return sum + 1;
+                    case 'b': return sum + 2;
+                    case 'c': return sum + 3;
+                    default: return sum;
+                }
+            }, 0);
+            
+            let level, description;
+            
+            if (score <= 7) {
+                level = 'Débutant';
+                currentLevel = 'debutant';
+                description = 'Parfait pour commencer votre aventure musicale! Nous allons apprendre ensemble les bases du piano et du solfège.';
+            } else if (score <= 12) {
+                level = 'Intermédiaire';
+                currentLevel = 'intermediaire';
+                description = 'Vous avez déjà quelques bases! Nous allons approfondir vos connaissances et travailler sur des techniques plus avancées.';
+            } else {
+                level = 'Avancé';
+                currentLevel = 'avance';
+                description = 'Excellent niveau! Nous nous concentrerons sur le perfectionnement de votre technique et l\'expression musicale.';
+            }
+            
+            document.getElementById('userLevel').textContent = level;
+            document.getElementById('levelDescription').textContent = description;
+            document.getElementById('levelResult').style.display = 'block';
+        }
+
+        function startLessons() {
+            showSection('lessons');
+            // Simuler un clic sur le bouton des cours
+            const lessonsBtn = document.querySelector('[onclick="showSection(\'lessons\')"]');
+            lessonsBtn.classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn !== lessonsBtn) btn.classList.remove('active');
+            });
+        }
+
+        // Ouvrir une leçon
+        function openLesson(lessonId) {
+            alert(`Ouverture de la leçon: ${lessonId}\nContenu détaillé de la leçon sera implémenté ici.`);
+        }
+
+        // Exercices
+        function startExercise(type) {
+            switch(type) {
+                case 'dozen':
+                    alert('Démarrage des exercices "A Dozen a Day":\n- Échauffement des doigts\n- Exercices de coordination\n- Patterns mélodiques');
+                    break;
+                case 'hanon':
+                    alert('Exercices Hanon:\n- Développement de la vélocité\n- Indépendance des doigts\n- Égalité et force');
+                    break;
+                case 'scales':
+                    alert('Pratique des gammes:\n- Do majeur\n- Gammes mineures\n- Arpèges');
+                    break;
+            }
+        }
+
+        // Jeux
+        function startNoteGame() {
+            alert('Jeu de reconnaissance des notes!\nÉcoutez la note et cliquez sur la bonne touche du piano.');
+            gameScore = 0;
+            updateScore();
+        }
+
+        function startRhythmGame() {
+            alert('Défi rythmique!\nÉcoutez le rythme et reproduisez-le en tapant sur les touches.');
+        }
+
+        function updateScore() {
+            document.getElementById('gameScore').textContent = gameScore;
+        }
+
+        // Réinitialiser le contexte audio si nécessaire
+        document.addEventListener('click', function() {
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        });
+    </script>
+</body>
+</html>
