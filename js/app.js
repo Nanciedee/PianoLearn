@@ -3,6 +3,55 @@
  * Gestion de l'interface utilisateur et coordination des modules
  */
 
+// === MODULES INTERNES ===
+
+class AudioEngine {
+    constructor() {
+        this.context = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    async init() {
+        console.log("🔊 AudioEngine initialisé");
+    }
+}
+
+class MIDIHandler {
+    constructor() {
+        this.onNoteOn = null;
+    }
+}
+
+class ExerciseManager {
+    constructor() {
+        this.currentExercise = null;
+    }
+
+    loadExercise(name, lang) {
+        console.log(`📘 Chargement de l'exercice: ${name} (${lang})`);
+        const container = document.getElementById("exercise-container");
+        if (container) {
+            container.innerHTML = `<h2>Exercice: ${name}</h2><p>Langue: ${lang}</p>`;
+        }
+    }
+}
+
+class LanguageManager {
+    constructor() {
+        this.translations = {};
+    }
+
+    async loadTranslations() {
+        this.translations = {
+            fr: { welcome: "Bienvenue" },
+            en: { welcome: "Welcome" }
+        };
+    }
+
+    getTranslation(key, lang = 'fr') {
+        return this.translations[lang]?.[key] || key;
+    }
+}
+
 class PianoLearnApp {
     constructor() {
         // État de l'application
