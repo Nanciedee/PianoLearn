@@ -9,6 +9,12 @@ class ExercisePlayer {
         this.metronomeInterval = null;
         this.exerciseInterval = null;
         this.audioEngine = null;
+
+        // Callbacks pour l'interface
+        this.onStateChange = null;
+        this.onProgress = null;
+        this.onMetronomeBeat = null;
+        this.onPlayModeChange = null;
     }
 
     async loadExercise(exerciseId) {
@@ -20,7 +26,7 @@ class ExercisePlayer {
             this.currentExercise = await response.json();
             return this.currentExercise;
         } catch (error) {
-            console.error('Erreur lors du chargement de l\'exercice:', error);
+            console.error('❌ Erreur lors du chargement de l\'exercice:', error);
             return null;
         }
     }
@@ -31,14 +37,14 @@ class ExercisePlayer {
 
     startExercise() {
         if (this.isPlaying || !this.currentExercise) return;
-        
+
         this.isPlaying = true;
         this.currentNoteIndex = 0;
         this.currentMeasure = 0;
-        
+
         this.startMetronome();
         this.playExercise();
-        
+
         this.onStateChange?.('playing');
     }
 
@@ -46,39 +52,39 @@ class ExercisePlayer {
         this.isPlaying = false;
         this.currentNoteIndex = 0;
         this.currentMeasure = 0;
-        
+
         clearInterval(this.metronomeInterval);
         clearInterval(this.exerciseInterval);
-        
+
         this.onStateChange?.('stopped');
     }
 
     startMetronome() {
         const beatInterval = 60000 / this.currentTempo;
-        
+
         this.metronomeInterval = setInterval(() => {
             this.onMetronomeBeat?.();
         }, beatInterval);
     }
 
     playExercise() {
-        const noteInterval = (60 / this.currentTempo) * 500; // Demi-temps en millisecondes
-        
+        const noteInterval = (60 / this.currentTempo) * 500; // demi-temps en ms
+
         this.exerciseInterval = setInterval(() => {
-            if (!this.isPlaying) return;
-            
+            if (!this.isPlaying || !this.currentExercise) return;
+
             const totalMeasures = this.currentExercise.rightHand.measures.length;
             const notesPerMeasure = 8;
-            
+
             if (this.currentMeasure >= totalMeasures) {
-                this.currentMeasure = 0;
-                this.currentNoteIndex = 0;
+                this.stopExercise();
+                return;
             }
-            
+
             const measure = this.currentMeasure;
             const noteInMeasure = this.currentNoteIndex % notesPerMeasure;
-            
-            // Jouer les notes selon le mode
+
+            // Jouer main droite
             if (this.playMode === 'both' || this.playMode === 'right') {
                 const rightNote = this.currentExercise.rightHand.measures[measure].notes[noteInMeasure];
                 const rightFingering = this.currentExercise.rightHand.measures[measure].fingering[noteInMeasure];
@@ -86,7 +92,8 @@ class ExercisePlayer {
                     this.audioEngine.playNote(rightNote, rightFingering);
                 }
             }
-            
+
+            // Jouer main gauche
             if (this.playMode === 'both' || this.playMode === 'left') {
                 const leftNote = this.currentExercise.leftHand.measures[measure].notes[noteInMeasure];
                 const leftFingering = this.currentExercise.leftHand.measures[measure].fingering[noteInMeasure];
@@ -94,20 +101,21 @@ class ExercisePlayer {
                     this.audioEngine.playNote(leftNote, leftFingering);
                 }
             }
-            
-            // Progression
+
+            // Mise à jour de la progression
             const totalNotes = totalMeasures * notesPerMeasure;
-            const currentNote = this.currentMeasure * notesPerMeasure + noteInMeasure + 1;
+            const currentNote = measure * notesPerMeasure + noteInMeasure + 1;
             const progress = (currentNote / totalNotes) * 100;
-            
-            this.onProgress?.(progress, this.currentMeasure + 1, noteInMeasure + 1);
-            
+
+            this.onProgress?.(progress, measure + 1, noteInMeasure + 1);
+
+            // Avancer
             this.currentNoteIndex++;
             if (this.currentNoteIndex >= notesPerMeasure) {
                 this.currentNoteIndex = 0;
                 this.currentMeasure++;
             }
-            
+
         }, noteInterval);
     }
 
@@ -123,13 +131,7 @@ class ExercisePlayer {
         this.playMode = mode;
         this.onPlayModeChange?.(mode);
     }
-
-    // Callbacks pour l'interface
-    onStateChange = null;
-    onProgress = null;
-    onMetronomeBeat = null;
-    onPlayModeChange = null;
 }
 
-// Export pour utilisation globale
+// ✅ Export global pour utilisation dans l'interface
 window.ExercisePlayer = ExercisePlayer;
