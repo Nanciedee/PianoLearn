@@ -1,0 +1,260 @@
+{
+  "app": {
+    "title": "PianoLearn",
+    "subtitle": "Votre parcours d'apprentissage du piano personnalisé",
+    "loading": "Chargement en cours...",
+    "error": "Une erreur s'est produite"
+  },
+  "navigation": {
+    "levelTest": "Test de Niveau",
+    "lessons": "Cours", 
+    "exercises": "Exercices",
+    "games": "Jeux",
+    "theory": "Solfège"
+  },
+  "language": {
+    "french": "Français (Do-Ré-Mi)",
+    "english": "English (C-D-E)",
+    "switch": "Changer de langue"
+  },
+  "notes": {
+    "C": "Do",
+    "C#": "Do#", 
+    "D": "Ré",
+    "D#": "Ré#",
+    "E": "Mi",
+    "F": "Fa", 
+    "F#": "Fa#",
+    "G": "Sol",
+    "G#": "Sol#", 
+    "A": "La",
+    "A#": "La#",
+    "B": "Si"
+  },
+  "midi": {
+    "title": "Clavier MIDI",
+    "connected": "Connecté",
+    "disconnected": "Non connecté", 
+    "connecting": "Connexion en cours...",
+    "connectButton": "Connecter MIDI",
+    "status": {
+      "connected": "Clavier MIDI connecté et fonctionnel",
+      "disconnected": "Non connecté - Connectez un clavier MIDI pour une expérience complète",
+      "error": "Erreur de connexion MIDI"
+    },
+    "devices": {
+      "found": "appareil(s) MIDI détecté(s)",
+      "none": "Aucun appareil MIDI trouvé"
+    }
+  },
+  "levelTest": {
+    "title": "Évaluation de Niveau",
+    "description": "Répondez à ces questions pour déterminer votre niveau de piano",
+    "questions": {
+      "q1": {
+        "title": "Question 1/5: Pouvez-vous identifier les notes sur le clavier?",
+        "instruction": "Cliquez sur la note DO",
+        "options": {
+          "a": "Je ne sais pas où elle se trouve",
+          "b": "Je peux la trouver avec de l'aide", 
+          "c": "Je la trouve facilement"
+        }
+      },
+      "q2": {
+        "title": "Question 2/5: Connaissez-vous les accords de base?",
+        "options": {
+          "a": "Je ne connais aucun accord",
+          "b": "Je connais Do majeur et quelques autres",
+          "c": "Je connais plusieurs accords majeurs et mineurs"
+        }
+      },
+      "q3": {
+        "title": "Question 3/5: Pouvez-vous lire une partition simple?",
+        "options": {
+          "a": "Je ne sais pas lire les partitions",
+          "b": "Je peux lire les notes simples lentement", 
+          "c": "Je lis couramment les partitions"
+        }
+      }
+    },
+    "calculateButton": "Voir mon niveau",
+    "results": {
+      "yourLevel": "Votre Niveau:",
+      "beginner": {
+        "title": "Débutant",
+        "description": "Parfait pour commencer votre aventure musicale! Nous allons apprendre ensemble les bases du piano et du solfège."
+      },
+      "intermediate": {
+        "title": "Intermédiaire", 
+        "description": "Vous avez déjà quelques bases! Nous allons approfondir vos connaissances et travailler sur des techniques plus avancées."
+      },
+      "advanced": {
+        "title": "Avancé",
+        "description": "Excellent niveau! Nous nous concentrerons sur le perfectionnement de votre technique et l'expression musicale."
+      }
+    },
+    "startLessons": "Commencer les cours"
+  },
+  "lessons": {
+    "title": "Cours de Piano",
+    "methods": {
+      "title": "Méthodes Utilisées",
+      "dozenADay": {
+        "title": "A Dozen a Day",
+        "description": "Exercices d'échauffement quotidiens pour développer la technique de base",
+        "levels": {
+          "preparatory": "Groupe 1: Préparatoire",
+          "primary": "Groupe 2: Primaire", 
+          "elementary": "Groupe 3: Élémentaire"
+        }
+      },
+      "hanon": {
+        "title": "Hanon - Le Pianiste Virtuose",
+        "description": "Exercices techniques pour l'agilité et l'indépendance des doigts",
+        "parts": {
+          "part1": "Exercices 1-20: Première partie",
+          "scales": "Exercices 21-43: Gammes",
+          "arpeggios": "Exercices 44-60: Arpèges"
+        }
+      },
+      "schmoll": {
+        "title": "Schmoll - Méthode",
+        "description": "Méthode progressive pour l'apprentissage du piano",
+        "volumes": {
+          "initiation": "Volume 1: Initiation",
+          "development": "Volume 2: Développement",
+          "perfection": "Volume 3: Perfectionnement"
+        }
+      }
+    },
+    "beginner": {
+      "title": "Cours pour Débutants",
+      "lesson1": {
+        "title": "Leçon 1: Posture et Position",
+        "description": "Apprendre la bonne posture au piano"
+      },
+      "lesson2": {
+        "title": "Leçon 2: Découverte du Clavier", 
+        "description": "Les touches blanches et noires, position des notes"
+      },
+      "lesson3": {
+        "title": "Leçon 3: Premières Notes",
+        "description": "Do, Ré, Mi - vos premières notes"
+      }
+    },
+    "intermediate": {
+      "title": "Cours Intermédiaires",
+      "scales": {
+        "title": "Gammes et Arpèges",
+        "description": "Techniques avancées basées sur Hanon"
+      },
+      "harmony": {
+        "title": "Harmonie et Accords", 
+        "description": "Progressions harmoniques et analyse"
+      },
+      "expression": {
+        "title": "Expression Musicale",
+        "description": "Dynamiques et phrasé musical"
+      }
+    }
+  },
+  "exercises": {
+    "title": "Exercices Pratiques",
+    "recording": {
+      "start": "Commencer l'enregistrement",
+      "stop": "Arrêter",
+      "play": "Écouter", 
+      "analyze": "Analyser ma pratique",
+      "status": {
+        "recording": "Enregistrement en cours...",
+        "stopped": "Enregistrement arrêté",
+        "playing": "Lecture en cours..."
+      }
+    },
+    "dozenADay": {
+      "title": "Exercices Quotidiens - A Dozen a Day",
+      "description": "Exercices d'échauffement et de technique",
+      "startButton": "Commencer les exercices"
+    },
+    "hanon": {
+      "title": "Exercices Techniques - Hanon",
+      "description": "Développement de la vélocité et de l'indépendance des doigts", 
+      "startButton": "Exercices Hanon"
+    },
+    "scales": {
+      "title": "Gammes et Arpèges",
+      "description": "Pratique des gammes majeures et mineures",
+      "startButton": "Pratiquer les gammes"
+    }
+  },
+  "games": {
+    "title": "Jeux Musicaux",
+    "score": "Score:",
+    "noteRecognition": {
+      "title": "Jeu de Reconnaissance des Notes",
+      "description": "Identifiez la note jouée!",
+      "playButton": "Jouer"
+    },
+    "rhythm": {
+      "title": "Défi Rythme", 
+      "description": "Reproduisez le rythme!",
+      "playButton": "Défi Rythme"
+    }
+  },
+  "theory": {
+    "title": "Théorie Musicale et Solfège",
+    "basics": {
+      "title": "Les Bases du Solfège"
+    },
+    "noteValues": {
+      "title": "Valeurs de Notes",
+      "whole": "Ronde: 4 temps",
+      "half": "Blanche: 2 temps",
+      "quarter": "Noire: 1 temps", 
+      "eighth": "Croche: 1/2 temps"
+    },
+    "clefs": {
+      "title": "Clés Musicales",
+      "treble": "Clé de Sol: Pour les notes aigues (main droite)",
+      "bass": "Clé de Fa: Pour les notes graves (main gauche)"
+    }
+  },
+  "common": {
+    "buttons": {
+      "start": "Commencer",
+      "stop": "Arrêter", 
+      "play": "Jouer",
+      "pause": "Pause",
+      "reset": "Recommencer",
+      "save": "Sauvegarder",
+      "load": "Charger",
+      "settings": "Paramètres",
+      "help": "Aide",
+      "close": "Fermer",
+      "cancel": "Annuler",
+      "confirm": "Confirmer"
+    },
+    "levels": {
+      "beginner": "Débutant",
+      "intermediate": "Intermédiaire", 
+      "advanced": "Avancé"
+    },
+    "status": {
+      "loading": "Chargement...",
+      "saving": "Sauvegarde...",
+      "error": "Erreur",
+      "success": "Succès",
+      "ready": "Prêt"
+    }
+  },
+  "messages": {
+    "welcome": "Bienvenue dans PianoLearn!",
+    "midiConnected": "Clavier MIDI connecté avec succès!",
+    "midiDisconnected": "Clavier MIDI déconnecté",
+    "recordingStarted": "Enregistrement démarré",
+    "recordingStopped": "Enregistrement arrêté",
+    "noRecording": "Aucun enregistrement disponible",
+    "exerciseCompleted": "Exercice terminé! Bien joué!",
+    "levelUp": "Félicitations! Vous passez au niveau supérieur!"
+  }
+}
