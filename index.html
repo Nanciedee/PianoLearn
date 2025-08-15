@@ -678,11 +678,21 @@
             <!-- Ajoutez cette section dans le body de votre index.html -->
 <section class="exercises-section">
     <h2>📚 Exercices disponibles</h2>
-    <div class="exercise-grid" id="exercise-grid">
-        <!-- Les exercices seront chargés ici -->
-        <div style="text-align: center; padding: 20px;">
-            <p>🎵 Chargement des exercices...</p>
+    <div class="exercise-grid">
+        <div class="exercise-card" onclick="openExercise('hanon-01')">
+            <div class="exercise-header">
+                <span class="exercise-badge">HANON</span>
+                <span class="difficulty beginner">Débutant</span>
+            </div>
+            <h3>Exercice N°1 - Indépendance des doigts</h3>
+            <p>Premier exercice technique pour développer l'agilité</p>
+            <div class="exercise-meta">
+                <span>⏱️ 5-10 min</span>
+                <span>🎵 Do Majeur</span>
+                <span>🎹 72 BPM</span>
+            </div>
         </div>
+        <!-- Autres exercices... -->
     </div>
 </section>
 
