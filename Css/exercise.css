@@ -23,6 +23,62 @@
     gap: 15px;
 }
 
+.exercise-badge {
+    font-size: 0.6em;
+    background: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+
+.difficulty.beginner {
+    background: #27ae60;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 0.8em;
+}
+
+.exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.exercise-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.exercise-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.exercise-meta {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .exercise-title {
+        font-size: 1.8em;
+    }
+    
+    .exercise-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .composer {
     font-size: 1.2em;
     color: #7f8c8d;
