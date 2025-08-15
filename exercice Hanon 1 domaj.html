@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piano Virtuel - Hanon N°1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .exercise-title {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .composer {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .exercise-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #34495e;
+            font-size: 1.1em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .piano-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .piano {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: #2c3e50;
+            padding: 20px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .key {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.1s ease;
+        }
+
+        .white-key {
+            width: 45px;
+            height: 200px;
+            background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+            border: 2px solid #ddd;
+            border-radius: 0 0 8px 8px;
+            margin: 0 1px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .black-key {
+            width: 28px;
+            height: 120px;
+            background: linear-gradient(to bottom, #2c3e50 0%, #1a252f 100%);
+            border: 1px solid #000;
+            border-radius: 0 0 4px 4px;
+            position: absolute;
+            z-index: 2;
+            color: white;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 8px;
+            font-size: 10px;
+        }
+
+        .key:hover {
+            transform: translateY(2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .key.active {
+            background: linear-gradient(to bottom, #e74c3c, #c0392b);
+            transform: translateY(3px);
+        }
+
+        .white-key.active {
+            background: linear-gradient(to bottom, #3498db, #2980b9);
+            color: white;
+        }
+
+        .fingering-display {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(241, 196, 15, 0.9);
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 12px;
+            display: none;
+        }
+
+        .key.highlight .fingering-display {
+            display: block;
+        }
+
+        .tempo-control {
+            margin-bottom: 20px;
+        }
+
+        .tempo-slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .play-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #27ae60, #229954);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .exercise-details {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .details-tabs {
+            display: flex;
+            border-bottom: 2px solid #ecf0f1;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            border-bottom-color: #3498db;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .objectives-list, .instructions-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .objectives-list li, .instructions-list li {
+            background: #f8f9fa;
+            margin: 8px 0;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .instructions-list li {
+            border-left-color: #3498db;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .metronome {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .metronome-beat {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #ecf0f1;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.1s ease;
+        }
+
+        .metronome-beat.active {
+            background: #e74c3c;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .hand-indicator {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .hand-btn {
+            padding: 8px 15px;
+            border: 2px solid #3498db;
+            background: transparent;
+            color: #3498db;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hand-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .white-key {
+                width: 35px;
+                height: 150px;
+            }
+            
+            .black-key {
+                width: 22px;
+                height: 90px;
+            }
+            
+            .exercise-title {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête de l'exercice -->
+        <div class="header">
+            <div class="exercise-title">
+                🎹 Exercice N°1 en Do Majeur
+                <span style="font-size: 0.6em; background: #e74c3c; color: white; padding: 5px 10px; border-radius: 15px;">HANON</span>
+            </div>
+            <div class="composer">Charles-Louis Hanon - Indépendance des doigts</div>
+            
+            <div class="exercise-info">
+                <div class="info-card">
+                    <div class="info-label">Difficulté</div>
+                    <div class="info-value">🟢 Débutant</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Durée</div>
+                    <div class="info-value">⏱️ 5-10 minutes</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Tempo recommandé</div>
+                    <div class="info-value">🎵 72 BPM</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Tonalité</div>
+                    <div class="info-value">🎼 Do Majeur</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Section Piano -->
+            <div class="piano-section">
+                <h3>🎹 Piano Virtuel</h3>
+                
+                <!-- Sélection des mains -->
+                <div class="hand-indicator">
+                    <button class="hand-btn active" id="both-hands">👐 Deux mains</button>
+                    <button class="hand-btn" id="right-hand">👉 Main droite</button>
+                    <button class="hand-btn" id="left-hand">👈 Main gauche</button>
+                </div>
+
+                <!-- Piano -->
+                <div class="piano" id="piano">
+                    <!-- Les touches seront générées par JavaScript -->
+                </div>
+
+                <!-- Barre de progression -->
+                <div>
+                    <label>Progression de l'exercice:</label>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress"></div>
+                    </div>
+                    <small id="progress-text">0% - Prêt à commencer</small>
+                </div>
+            </div>
+
+            <!-- Panneau de contrôles -->
+            <div class="controls-panel">
+                <h3>🎛️ Contrôles</h3>
+
+                <!-- Métronome -->
+                <div class="metronome">
+                    <div class="metronome-beat" id="metronome-beat">♪</div>
+                    <div id="current-bpm">72 BPM</div>
+                </div>
+
+                <!-- Contrôle du tempo -->
+                <div class="tempo-control">
+                    <label for="tempo">Tempo: <span id="tempo-value">72</span> BPM</label>
+                    <input type="range" id="tempo" class="tempo-slider" min="60" max="108" value="72">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span>Lent (60)</span>
+                        <span>Rapide (108)</span>
+                    </div>
+                </div>
+
+                <!-- Contrôles de lecture -->
+                <div class="play-controls">
+                    <button class="btn btn-success" id="play-btn">▶️ Jouer l'exercice</button>
+                    <button class="btn btn-primary" id="practice-btn">🎯 Mode pratique</button>
+                    <button class="btn btn-warning" id="stop-btn">⏹️ Arrêter</button>
+                </div>
+
+                <!-- Fichiers audio -->
+                <div>
+                    <h4>🎵 Audio de référence</h4>
+                    <button class="btn btn-primary" onclick="playAudioFile('slow')" style="margin: 5px 0; font-size: 14px;">🐌 Tempo lent</button>
+                    <button class="btn btn-primary" onclick="playAudioFile('medium')" style="margin: 5px 0; font-size: 14px;">🚶 Tempo moyen</button>
+                    <button class="btn btn-primary" onclick="playAudioFile('fast')" style="margin: 5px 0; font-size: 14px;">🏃 Tempo rapide</button>
+                </div>
+
+                <!-- Partition PDF -->
+                <div style="margin-top: 20px;">
+                    <h4>📄 Partition</h4>
+                    <button class="btn btn-warning" onclick="openSheet()">📖 Ouvrir la partition</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Détails de l'exercice -->
+        <div class="exercise-details">
+            <div class="details-tabs">
+                <div class="tab active" onclick="showTab('objectives')">🎯 Objectifs</div>
+                <div class="tab" onclick="showTab('instructions')">📋 Instructions</div>
+                <div class="tab" onclick="showTab('notes')">💡 Conseils</div>
+                <div class="tab" onclick="showTab('mistakes')">⚠️ Erreurs courantes</div>
+            </div>
+
+            <div id="objectives" class="tab-content active">
+                <h4>Objectifs de l'exercice:</h4>
+                <ul class="objectives-list">
+                    <li>🤚 Développer l'indépendance des doigts</li>
+                    <li>⚖️ Améliorer l'égalité du toucher</li>
+                    <li>💪 Renforcer la position de la main</li>
+                    <li>⚡ Acquérir de la vélocité progressivement</li>
+                </ul>
+            </div>
+
+            <div id="instructions" class="tab-content">
+                <h4>Instructions de pratique:</h4>
+                <ul class="instructions-list">
+                    <li>🐌 Jouer très lentement au début</li>
+                    <li>🤲 Maintenir les doigts bien arrondis</li>
+                    <li>💫 Garder les poignets souples</li>
+                    <li>🎵 Jouer legato avec précision</li>
+                    <li>📈 Augmenter le tempo progressivement</li>
+                </ul>
+            </div>
+
+            <div id="notes" class="tab-content">
+                <h4>Conseils de pratique:</h4>
+                <ul class="instructions-list">
+                    <li>🎯 Commencer mains séparées pendant plusieurs jours</li>
+                    <li>⏰ Utiliser un métronome dès le début</li>
+                    <li>🎵 Se concentrer sur la régularité plutôt que sur la vitesse</li>
+                    <li>😌 Faire des pauses régulières pour éviter la fatigue</li>
+                </ul>
+            </div>
+
+            <div id="mistakes" class="tab-content">
+                <h4>Erreurs courantes à éviter:</h4>
+                <ul class="instructions-list">
+                    <li>⚡ Jouer trop vite trop tôt</li>
+                    <li>🤚 Négliger l'indépendance des doigts</li>
+                    <li>😤 Contracter les poignets</li>
+                    <li>⚖️ Inégalité dans le toucher</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données de l'exercice Hanon N°1
+        const exerciseData = {
+            "rightHand": {
+                "measures": [
+                    {
+                        "measure": 1,
+                        "notes": ["C4", "E4", "F4", "G4", "A4", "G4", "F4", "E4"],
+                        "fingering": [1, 2, 3, 4, 5, 4, 3, 2],
+                        "timing": [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5]
+                    },
+                    {
+                        "measure": 2,
+                        "notes": ["D4", "F4", "G4", "A4", "B4", "A4", "G4", "F4"],
+                        "fingering": [1, 2, 3, 4, 5, 4, 3, 2],
+                        "timing": [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5]
+                    }
+                ]
+            },
+            "leftHand": {
+                "measures": [
+                    {
+                        "measure": 1,
+                        "notes": ["C3", "B2", "A2", "G2", "F2", "G2", "A2", "B2"],
+                        "fingering": [5, 4, 3, 2, 1, 2, 3, 4],
+                        "timing": [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5]
+                    },
+                    {
+                        "measure": 2,
+                        "notes": ["D3", "C3", "B2", "A2", "G2", "A2", "B2", "C3"],
+                        "fingering": [5, 4, 3, 2, 1, 2, 3, 4],
+                        "timing": [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5]
+                    }
+                ]
+            }
+        };
+
+        // Variables globales
+        let currentTempo = 72;
+        let isPlaying = false;
+        let currentNoteIndex = 0;
+        let currentMeasure = 0;
+        let playMode = 'both'; // 'both', 'right', 'left'
+        let metronomeInterval;
+        let exerciseInterval;
+        let audioContext;
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            initAudio();
+            createPiano();
+            setupEventListeners();
+        });
+
+        // Initialiser l'audio context
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.log('Audio context not supported');
+            }
+        }
+
+        // Créer le piano virtuel
+        function createPiano() {
+            const piano = document.getElementById('piano');
+            const notes = [
+                {note: 'C', octave: 3, type: 'white'},
+                {note: 'C#', octave: 3, type: 'black'},
+                {note: 'D', octave: 3, type: 'white'},
+                {note: 'D#', octave: 3, type: 'black'},
+                {note: 'E', octave: 3, type: 'white'},
+                {note: 'F', octave: 3, type: 'white'},
+                {note: 'F#', octave: 3, type: 'black'},
+                {note: 'G', octave: 3, type: 'white'},
+                {note: 'G#', octave: 3, type: 'black'},
+                {note: 'A', octave: 3, type: 'white'},
+                {note: 'A#', octave: 3, type: 'black'},
+                {note: 'B', octave: 3, type: 'white'},
+                {note: 'C', octave: 4, type: 'white'},
+                {note: 'C#', octave: 4, type: 'black'},
+                {note: 'D', octave: 4, type: 'white'},
+                {note: 'D#', octave: 4, type: 'black'},
+                {note: 'E', octave: 4, type: 'white'},
+                {note: 'F', octave: 4, type: 'white'},
+                {note: 'F#', octave: 4, type: 'black'},
+                {note: 'G', octave: 4, type: 'white'},
+                {note: 'G#', octave: 4, type: 'black'},
+                {note: 'A', octave: 4, type: 'white'},
+                {note: 'A#', octave: 4, type: 'black'},
+                {note: 'B', octave: 4, type: 'white'},
+                {note: 'C', octave: 5, type: 'white'}
+            ];
+
+            let whiteKeyPosition = 0;
+
+            notes.forEach(noteData => {
+                const key = document.createElement('div');
+                const noteName = noteData.note + noteData.octave;
+                
+                key.classList.add('key');
+                key.classList.add(noteData.type === 'white' ? 'white-key' : 'black-key');
+                key.dataset.note = noteName;
+                key.textContent = noteData.note;
+                
+                // Ajouter affichage du doigté
+                const fingeringDisplay = document.createElement('div');
+                fingeringDisplay.classList.add('fingering-display');
+                key.appendChild(fingeringDisplay);
+
+                if (noteData.type === 'white') {
+                    key.style.left = whiteKeyPosition * 46 + 'px';
+                    whiteKeyPosition++;
+                    piano.appendChild(key);
+                } else {
+                    key.style.left = (whiteKeyPosition - 1) * 46 + 23 + 'px';
+                    piano.appendChild(key);
+                }
+
+                // Événements de clic
+                key.addEventListener('mousedown', () => playNote(noteName));
+                key.addEventListener('mouseup', () => stopNote(noteName));
+            });
+        }
+
+        // Configuration des événements
+        function setupEventListeners() {
+            // Contrôle du tempo
+            document.getElementById('tempo').addEventListener('input', function() {
+                currentTempo = parseInt(this.value);
+                document.getElementById('tempo-value').textContent = currentTempo;
+                document.getElementById('current-bpm').textContent = currentTempo + ' BPM';
+            });
+
+            // Boutons de contrôle
+            document.getElementById('play-btn').addEventListener('click', startExercise);
+            document.getElementById('stop-btn').addEventListener('click', stopExercise);
+            document.getElementById('practice-btn').addEventListener('click', practiceMode);
+
+            // Sélection des mains
+            document.getElementById('both-hands').addEventListener('click', () => setPlayMode('both'));
+            document.getElementById('right-hand').addEventListener('click', () => setPlayMode('right'));
+            document.getElementById('left-hand').addEventListener('click', () => setPlayMode('left'));
+        }
+
+        // Jouer une note
+        function playNote(note, fingering = null) {
+            const key = document.querySelector(`[data-note="${note}"]`);
+            if (key) {
+                key.classList.add('active', 'highlight');
+                
+                // Afficher le doigté
+                if (fingering) {
+                    const fingeringDisplay = key.querySelector('.fingering-display');
+                    fingeringDisplay.textContent = fingering;
+                }
+
+                // Synthétiser le son
+                if (audioContext) {
+                    const frequency = getNoteFrequency(note);
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = frequency;
+                    oscillator.type = 'triangle';
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.8);
+                }
+            }
+        }
+
+        // Arrêter une note
+        function stopNote(note) {
+            const key = document.querySelector(`[data-note="${note}"]`);
+            if (key) {
+                setTimeout(() => {
+                    key.classList.remove('active', 'highlight');
+                    const fingeringDisplay = key.querySelector('.fingering-display');
+                    fingeringDisplay.textContent = '';
+                }, 100);
+            }
+        }
+
+        // Obtenir la fréquence d'une note
+        function getNoteFrequency(note) {
+            const notes = {
+                'C': 261.63, 'C#': 277.18, 'D': 293.66, 'D#': 311.13,
+                'E': 329.63, 'F': 349.23, 'F#': 369.99, 'G': 392.00,
+                'G#': 415.30, 'A': 440.00, 'A#': 466.16, 'B': 493.88
+            };
+            
+            const noteName = note.slice(0, -1);
+            const octave = parseInt(note.slice(-1));
+            const baseFreq = notes[noteName];
+            
+            return baseFreq * Math.pow(2, octave - 4);
+        }
+
+        // Commencer l'exercice
+        function startExercise() {
+            if (isPlaying) return;
+            
+            isPlaying = true;
+            currentNoteIndex = 0;
+            currentMeasure = 0;
+            
+            document.getElementById('play-btn').textContent = '⏸️ En cours...';
+            
+            startMetronome();
+            playExercise();
+        }
+
+        // Arrêter l'exercice
+        function stopExercise() {
+            isPlaying = false;
+            currentNoteIndex = 0;
+            currentMeasure = 0;
+            
+            clearInterval(metronomeInterval);
+            clearInterval(exerciseInterval);
+            
+            document.getElementById('play-btn').textContent = '▶️ Jouer l\'exercice';
+            document.getElementById('progress').style.width = '0%';
+            document.getElementById('progress-text').textContent = '0% - Arrêté';
+            
+            // Nettoyer le piano
+            document.querySelectorAll('.key').forEach(key => {
+                key.classList.remove('active', 'highlight');
+            });
+        }
+
+        // Démarrer le métronome
+        function startMetronome() {
+            const beatInterval = 60000 / currentTempo; // en millisecondes
+            const metronome = document.getElementById('metronome-beat');
+            
+            metronomeInterval = setInterval(() => {
+                metronome.classList.add('active');
+                setTimeout(() => {
+                    metronome.classList.remove('active');
+                }, 100);
+            }, beatInterval);
+        }
+
+        // Jouer l'exercice
+        function playExercise() {
+            const noteInterval = (60 / currentTempo) * 500; // Demi-temps en millisecondes
+            
+            exerciseInterval = setInterval(() => {
+                if (!isPlaying) return;
+                
+                const totalMeasures = exerciseData.rightHand.measures.length;
+                const notesPerMeasure = 8;
+                
+                if (currentMeasure >= totalMeasures) {
+                    // Recommencer
+                    currentMeasure = 0;
+                    currentNoteIndex = 0;
+                }
+                
+                const measure = currentMeasure;
+                const noteInMeasure = currentNoteIndex % notesPerMeasure;
+                
+                // Jouer les notes selon le mode
+                if (playMode === 'both' || playMode === 'right') {
+                    const rightNote = exerciseData.rightHand.measures[measure].notes[noteInMeasure];
+                    const rightFingering = exerciseData.rightHand.measures[measure].fingering[noteInMeasure];
+                    if (rightNote) {
+                        playNote(rightNote, rightFingering);
+                    }
+                }
+                
+                if (playMode === 'both' || playMode === 'left') {
+                    const leftNote = exerciseData.leftHand.measures[measure].notes[noteInMeasure];
+                    const leftFingering = exerciseData.leftHand.measures[measure].fingering[noteInMeasure];
+                    if (leftNote) {
+                        playNote(leftNote, leftFingering);
+                    }
+                }
+                
+                // Mettre à jour la progression
+                const totalNotes = totalMeasures * notesPerMeasure;
+                const currentNote = currentMeasure * notesPerMeasure + noteInMeasure + 1;
+                const progress = (currentNote / totalNotes) * 100;
+                
+                document.getElementById('progress').style.width = progress + '%';
+                document.getElementById('progress-text').textContent = 
+                    Math.round(progress) + '% - Mesure ' + (currentMeasure + 1) + ', Note ' + (noteInMeasure + 1);
+                
+                currentNoteIndex++;
+                if (currentNoteIndex >= notesPerMeasure) {
+                    currentNoteIndex = 0;
+                    currentMeasure++;
+                    
+                    // Pause entre les mesures
+                    setTimeout(() => {}, 200);
+                }
+                
+            }, noteInterval);
+        }
+
+        // Mode pratique (note par note)
+        function practiceMode() {
+            if (isPlaying) {
+                stopExercise();
+                return;
+            }
+            
+            alert('Mode pratique activé ! Cliquez sur les touches du piano pour pratiquer. Les doigtés s\'afficheront automatiquement.');
+            
+            // Activer l'affichage des doigtés pour toutes les notes de l'exercice
+            const allNotes = new Set();
+            
+            exerciseData.rightHand.measures.forEach(measure => {
+                measure.notes.forEach((note, index) => {
+                    allNotes.add(`${note}-${measure.fingering[index]}`);
+                });
+            });
+            
+            exerciseData.leftHand.measures.forEach(measure => {
+                measure.notes.forEach((note, index) => {
+                    allNotes.add(`${note}-${measure.fingering[index]}`);
+                });
+            });
+            
+            // Mettre en surbrillance les touches de l'exercice
+            document.querySelectorAll('.key').forEach(key => {
+                const note = key.dataset.note;
+                let hasNote = false;
+                let fingering = '';
+                
+                // Chercher si cette note est dans l'exercice
+                exerciseData.rightHand.measures.forEach(measure => {
+                    const noteIndex = measure.notes.indexOf(note);
+                    if (noteIndex !== -1) {
+                        hasNote = true;
+                        fingering = measure.fingering[noteIndex];
+                    }
+                });
+                
+                exerciseData.leftHand.measures.forEach(measure => {
+                    const noteIndex = measure.notes.indexOf(note);
+                    if (noteIndex !== -1) {
+                        hasNote = true;
+                        fingering = measure.fingering[noteIndex];
+                    }
+                });
+                
+                if (hasNote) {
+                    key.style.border = '3px solid #e74c3c';
+                    const fingeringDisplay = key.querySelector('.fingering-display');
+                    fingeringDisplay.textContent = fingering;
+                    fingeringDisplay.style.display = 'block';
+                }
+            });
+        }
+
+        // Définir le mode de jeu
+        function setPlayMode(mode) {
+            playMode = mode;
+            
+            // Mettre à jour les boutons
+            document.querySelectorAll('.hand-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(mode === 'both' ? 'both-hands' : 
+                                   mode === 'right' ? 'right-hand' : 'left-hand').classList.add('active');
+        }
+
+        // Afficher les onglets
+        function showTab(tabName) {
+            // Cacher tous les contenus
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Désactiver tous les onglets
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Afficher le contenu sélectionné
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Jouer les fichiers audio de référence
+        function playAudioFile(speed) {
+            // Simuler le chargement d'un fichier audio
+            const audioFiles = {
+                'slow': './assets/audio/exercises/hanon-01-slow.mp3',
+                'medium': './assets/audio/exercises/hanon-01-medium.mp3',
+                'fast': './assets/audio/exercises/hanon-01-fast.mp3'
+            };
+            
+            const audio = new Audio(audioFiles[speed]);
+            audio.play().catch(error => {
+                alert(`Fichier audio non trouvé: ${audioFiles[speed]}\n\nVeuillez ajouter les fichiers audio dans le dossier assets/audio/exercises/`);
+            });
+        }
+
+        // Ouvrir la partition PDF
+        function openSheet() {
+            const pdfUrl = './assets/documents/exercises/hanon-01.pdf';
+            
+            // Vérifier si le fichier existe (simulation)
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            link.target = '_blank';
+            link.click();
+            
+            // Alternative : affichage intégré
+            // const modal = document.createElement('div');
+            // modal.style.cssText = `
+            //     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            //     background: rgba(0,0,0,0.9); z-index: 1000; display: flex;
+            //     align-items: center; justify-content: center;
+            // `;
+            // modal.innerHTML = `
+            //     <div style="background: white; padding: 20px; border-radius: 10px; max-width: 90%; max-height: 90%;">
+            //         <button onclick="this.parentElement.parentElement.remove()" style="float: right; font-size: 20px;">✕</button>
+            //         <embed src="${pdfUrl}" type="application/pdf" width="800" height="600">
+            //     </div>
+            // `;
+            // document.body.appendChild(modal);
+        }
+
+        // Support clavier
+        document.addEventListener('keydown', function(event) {
+            const keyMap = {
+                'q': 'C4', 'w': 'D4', 'e': 'E4', 'r': 'F4', 't': 'G4', 'y': 'A4', 'u': 'B4',
+                '2': 'C#4', '3': 'D#4', '5': 'F#4', '6': 'G#4', '7': 'A#4'
+            };
+            
+            const note = keyMap[event.key.toLowerCase()];
+            if (note && !event.repeat) {
+                playNote(note);
+            }
+            
+            // Contrôles
+            if (event.code === 'Space') {
+                event.preventDefault();
+                if (isPlaying) {
+                    stopExercise();
+                } else {
+                    startExercise();
+                }
+            }
+        });
+
+        document.addEventListener('keyup', function(event) {
+            const keyMap = {
+                'q': 'C4', 'w': 'D4', 'e': 'E4', 'r': 'F4', 't': 'G4', 'y': 'A4', 'u': 'B4',
+                '2': 'C#4', '3': 'D#4', '5': 'F#4', '6': 'G#4', '7': 'A#4'
+            };
+            
+            const note = keyMap[event.key.toLowerCase()];
+            if (note) {
+                stopNote(note);
+            }
+        });
+
+        // Responsive design pour mobile
+        function handleResize() {
+            if (window.innerWidth < 768) {
+                document.querySelectorAll('.white-key').forEach(key => {
+                    key.style.width = '35px';
+                    key.style.height = '150px';
+                });
+                
+                document.querySelectorAll('.black-key').forEach(key => {
+                    key.style.width = '22px';
+                    key.style.height = '90px';
+                });
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial check
+
+        // Sauvegarde des progrès (localStorage simulation sans localStorage)
+        let practiceHistory = {
+            sessionsCompleted: 0,
+            bestTempo: 60,
+            totalPracticeTime: 0,
+            lastPracticeDate: null
+        };
+
+        function saveProgress() {
+            practiceHistory.sessionsCompleted++;
+            practiceHistory.bestTempo = Math.max(practiceHistory.bestTempo, currentTempo);
+            practiceHistory.lastPracticeDate = new Date().toISOString();
+            
+            console.log('Progrès sauvegardé:', practiceHistory);
+        }
+
+        // Auto-save sur arrêt d'exercice
+        const originalStopExercise = stopExercise;
+        stopExercise = function() {
+            originalStopExercise();
+            if (currentMeasure > 0 || currentNoteIndex > 0) {
+                saveProgress();
+            }
+        };
+    </script>
+</body>
+</html>
