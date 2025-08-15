@@ -398,6 +398,66 @@ class PianoLearnApp {
     }
 }
 
+// Fonction pour ouvrir un exercice
+function openExercise(exerciseId) {
+    window.location.href = `exercise.html?id=${exerciseId}`;
+}
+
+// Fonction pour charger la liste des exercices
+async function loadExercisesList() {
+    try {
+        const response = await fetch('./data/exercises/exercise-list.json');
+        const exercises = await response.json();
+        renderExercisesGrid(exercises);
+    } catch (error) {
+        console.error('Erreur lors du chargement des exercices:', error);
+    }
+}
+
+function renderExercisesGrid(exercises) {
+    const container = document.querySelector('.exercise-grid');
+    if (!container) return;
+
+    container.innerHTML = exercises.map(exercise => `
+        <div class="exercise-card" onclick="openExercise('${exercise.id}')">
+            <div class="exercise-header">
+                <span class="exercise-badge">${exercise.category.toUpperCase()}</span>
+                <span class="difficulty ${exercise.difficulty}">${exercise.difficulty}</span>
+            </div>
+            <h3>${exercise.title.fr}</h3>
+            <p>${exercise.description.fr}</p>
+            <div class="exercise-meta">
+                <span>⏱️ ${exercise.duration}</span>
+                <span>🎵 ${exercise.key}</span>
+                <span>🎹 ${exercise.tempo.recommended} BPM</span>
+            </div>
+        </div>
+    `).join('');
+}
+📋 7. Nouveau fichier data/exercises/exercise-list.json
+Créez ce fichier pour lister vos exercices :
+json[
+    {
+        "id": "hanon-01",
+        "title": {
+            "fr": "Hanon Exercice N°1 - Indépendance des doigts",
+            "en": "Hanon Exercise No.1 - Finger Independence"
+        },
+        "composer": "Charles-Louis Hanon",
+        "difficulty": "beginner",
+        "category": "hanon",
+        "duration": "5-10 minutes",
+        "key": "C major",
+        "tempo": {
+            "recommended": 72
+        },
+        "description": {
+            "fr": "Premier exercice technique pour développer l'indépendance et l'agilité des doigts",
+            "en": "First technical exercise to develop finger independence and agility"
+        }
+    }
+]
+
 // Fonctions globales pour maintenir la compatibilité avec l'HTML
 let app;
 
