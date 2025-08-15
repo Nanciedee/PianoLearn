@@ -158,33 +158,33 @@ class PianoLearnApp {
         console.log(`🌍 Langue changée vers: ${lang}`);
     }
 
-    updateLanguage() {
-        if (!this.languageManager) return;
-        
-        document.querySelectorAll('[data-fr]').forEach(element => {
-            const text = this.currentLanguage === 'fr' 
-                ? element.getAttribute('data-fr') 
-                : element.getAttribute('data-en');
-            
-            if (text) {
-                if (element.tagName === 'INPUT' || element.tagName === 'BUTTON') {
-                    element.textContent = text;
-                } else {
-                    element.textContent = text;
-                }
-            }
-        });
-        
-        // Textes spéciaux
-        const findNoteText = document.getElementById('findNoteText');
-        if (findNoteText) {
-            findNoteText.textContent = this.currentLanguage === 'fr' 
-                ? 'Cliquez sur la note DO' 
-                : 'Click on the note C';
-        }
-    }
+  updateLanguage() {
+    if (!this.languageManager) return;
 
-    loadExercise(name) {
+    document.querySelectorAll('[data-fr]').forEach(element => {
+        const text = this.currentLanguage === 'fr' 
+            ? element.getAttribute('data-fr') 
+            : element.getAttribute('data-en');
+
+        if (text) {
+            if (element.tagName === 'INPUT' || element.tagName === 'BUTTON') {
+                element.textContent = text;
+            } else {
+                element.textContent = text;
+            }
+        }
+    });
+
+    // Textes spéciaux
+    const findNoteText = document.getElementById('findNoteText');
+    if (findNoteText) {
+        findNoteText.textContent = this.currentLanguage === 'fr' 
+            ? 'Cliquez sur la note DO' 
+            : 'Click on the note C';
+    }
+}
+
+loadExercise(name) {
     if (this.exerciseManager) {
         this.exerciseManager.loadExercise(name, this.currentLanguage);
     }
