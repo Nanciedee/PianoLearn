@@ -104,4 +104,14 @@
       "sourceType": "module"
     },
     "rules": {
-      "no-unuse
+      "no-unused-vars": "warn",
+      "no-console": "off",
+      "indent": ["error", 2],
+      "quotes": ["error", "single"],
+      "semi": ["error", "always"]
+    }
+  },
+  "gitHooks": {
+    "pre-commit": "npm run lint && npm run test"
+  }
+}
