@@ -36,6 +36,8 @@ class PianoLearnApp {
             
             // Mettre à jour la langue
             this.updateLanguage();
+
+            this.loadExercise("hanon-01");
             
             console.log('✅ PianoLearn initialisé avec succès');
             
@@ -132,6 +134,12 @@ class PianoLearnApp {
                 : 'Click on the note C';
         }
     }
+
+    loadExercise(name) {
+    if (this.exerciseManager) {
+        this.exerciseManager.loadExercise(name, this.currentLanguage);
+    }
+}
 
     // === GESTION DU CLAVIER PIANO ===
     createPianoKeyboard(containerId) {
