@@ -675,6 +675,73 @@
                 </div>
             </div>
 
+            <!-- Ajoutez cette section dans le body de votre index.html -->
+<section class="exercises-section">
+    <h2>📚 Exercices disponibles</h2>
+    <div class="exercise-grid" id="exercise-grid">
+        <!-- Les exercices seront chargés ici -->
+        <div style="text-align: center; padding: 20px;">
+            <p>🎵 Chargement des exercices...</p>
+        </div>
+    </div>
+</section>
+
+<!-- Ajoutez ce lien CSS dans le head -->
+<link rel="stylesheet" href="css/exercise.css">
+
+<!-- Ajoutez ce script avant la fermeture du body -->
+<script>
+// Fonction pour ouvrir un exercice
+function openExercise(exerciseId) {
+    window.location.href = `exercise.html?id=${exerciseId}`;
+}
+
+// Fonction pour charger la liste des exercices
+async function loadExercisesList() {
+    try {
+        const response = await fetch('./data/exercises/exercise-list.json');
+        const exercises = await response.json();
+        renderExercisesGrid(exercises);
+    } catch (error) {
+        console.error('Erreur lors du chargement des exercices:', error);
+        document.getElementById('exercise-grid').innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+                <p>❌ Erreur lors du chargement des exercices</p>
+            </div>
+        `;
+    }
+}
+
+function renderExercisesGrid(exercises) {
+    const container = document.getElementById('exercise-grid');
+    if (!container) return;
+
+    container.innerHTML = exercises.map(exercise => `
+        <div class="exercise-card" onclick="openExercise('${exercise.id}')">
+            <div class="exercise-header">
+                <span class="exercise-badge">${exercise.category.toUpperCase()}</span>
+                <span class="difficulty ${exercise.difficulty}">
+                    ${exercise.difficulty === 'beginner' ? 'Débutant' : 
+                      exercise.difficulty === 'intermediate' ? 'Intermédiaire' : 'Avancé'}
+                </span>
+            </div>
+            <h3>${exercise.title.fr}</h3>
+            <p>${exercise.description.fr}</p>
+            <div class="exercise-meta">
+                <span>⏱️ ${exercise.duration}</span>
+                <span>🎵 ${exercise.key}</span>
+                <span>🎹 ${exercise.tempo.recommended} BPM</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Charger les exercices au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    loadExercisesList();
+});
+</script>
+
             <!-- Jeux -->
             <div id="games" class="section">
                 <div class="game-area">
