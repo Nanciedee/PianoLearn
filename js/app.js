@@ -5,16 +5,6 @@
 
 // === MODULES INTERNES ===
 
-class AudioEngine {
-    constructor() {
-        this.context = new (window.AudioContext || window.webkitAudioContext)();
-    }
-
-    async init() {
-        console.log("🔊 AudioEngine initialisé");
-    }
-}
-
 class MIDIHandler {
     constructor() {
         this.onNoteOn = null;
@@ -51,6 +41,7 @@ class LanguageManager {
         return this.translations[lang]?.[key] || key;
     }
 }
+
 
 class PianoLearnApp {
     constructor() {
